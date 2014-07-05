@@ -2,4 +2,7 @@
 *.govnc
 *.project
 *.idea
-
+*.o
+*.exe
+*.gcda
+*.gcno

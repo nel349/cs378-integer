@@ -16,6 +16,7 @@
 #include <stdexcept> // invalid_argument
 #include <string>    // string
 #include <vector>    // vector
+using namespace std;
 
 // -----------------
 // shift_left_digits
@@ -32,7 +33,9 @@
  */
 template <typename II, typename FI>
 FI shift_left_digits (II b, II e, int n, FI x) {
-    // <your code>
+    copy(b, e, x);
+    fill(x, x + n, 0);
+
     return x;}
 
 // ------------------
