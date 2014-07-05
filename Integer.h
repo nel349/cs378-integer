@@ -33,9 +33,15 @@ using namespace std;
  */
 template <typename II, typename FI>
 FI shift_left_digits (II b, II e, int n, FI x) {
-    copy(b, e, x);
-    fill(x, x + n, 0);
+    x = copy(b, e, x);
+//    FI y = x;
+//    advance(y, n);
 
+
+    fill(x, x+n, 0);
+    advance(x,n);
+
+    
     return x;}
 
 // ------------------
