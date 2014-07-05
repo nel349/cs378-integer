@@ -16,6 +16,7 @@
 #include <stdexcept> // invalid_argument
 #include <string>    // string
 #include <vector>    // vector
+#include <string.h>    // vector
 using namespace std;
 
 // -----------------
@@ -59,7 +60,8 @@ FI shift_left_digits (II b, II e, int n, FI x) {
  */
 template <typename II, typename FI>
 FI shift_right_digits (II b, II e, int n, FI x) {
-    // <your code>
+    x = copy(b, e-n, x);
+
     return x;}
 
 // -----------
@@ -79,8 +81,106 @@ FI shift_right_digits (II b, II e, int n, FI x) {
  */
 template <typename II1, typename II2, typename FI>
 FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-    // <your code>
-    return x;}
+
+    int size = distance(b1, e1);
+    cout << "Size: " << size << " ";
+
+    FI y(x);
+
+
+
+
+    int extra = 1;
+    bool flag = false;
+    int last = size;
+
+    advance(x, size);
+    while(e1 != b1){
+        --e1;
+        --e2;
+
+        if(last == 1){
+            int temp;
+            if(flag)
+                temp = (*e1  + *e2 + extra);
+            else
+                temp = (*e1  + *e2 );
+
+            // cout << temp  << "  ";
+            // flag = false;
+            --x;
+            *x=temp;
+        }
+        else if(flag){
+            int temp = (*e1  + *e2 + extra) % 10;
+            // cout << temp  << "  ";
+            flag = false;
+            --x;
+            *x=temp;
+            
+        }
+        else{
+            int temp = (*e1  + *e2) % 10;
+             // cout << temp << "  ";    
+            --x;    
+            *x=temp;
+                         
+        }
+        if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
+            // cout <<  (*e1 + *e2) % 10 << " ";
+             // cout << " when (*e1 + *e2) =  "<<(*e1 + *e2) <<  " " ;
+
+            flag = true;
+        }
+        --last;
+    }
+
+
+
+    bool flag_first= false;
+
+    if( to_string(x[0]).length() == 2){
+    	string first = to_string(x[0]);
+    	int f = (char)first[0] - '0';
+    	int s = (char)first[1]- '0';
+
+//    	istringstream ( first[0] ) >> f;
+//    	istringstream ( first[1] ) >> s;
+    	// cout << "FIRST: " << f<< endl;
+    	// cout << "SECOND: " << s << endl;
+
+        int n = 0;
+        while(n < size){
+            cout << "Y at j:"<< n  <<" is "<< y[n] << endl;
+            n++;
+        }
+        n = size;
+        while(n > 0){
+            y[n+1] = y[n];
+            n--;
+        }   
+        y[1] = s;
+        y[0] = f;
+
+        cout << "NEW Y\n" << endl;
+        n = 0;
+        while(n < size + 1){
+            // cout << "Y at j:"<< n  <<" is "<< y[n] << endl;
+            n++;
+        }
+    	// y[0] = f;
+    	// int temp = y[1];
+    	// y[1] = s;
+    	// y[2] = temp;
+
+     //    cout << "NEW SIZE: "<< size << endl;
+
+     size = size +1;
+
+    }
+
+    advance(y, size);
+    return y;}
 
 // ------------
 // minus_digits

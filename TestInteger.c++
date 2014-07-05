@@ -1,4 +1,4 @@
-// --------------------------------
+    // --------------------------------
 // projects/integer/TestInteger.c++
 // Copyright (C) 2014
 // Glenn P. Downing
@@ -86,7 +86,60 @@ TEST(Integer, plus_digits) {
           int x[10];
     const int* p = plus_digits(a, a + 3, b, b + 3, x);
     ASSERT_EQ(3, p - x);
+
+//    cout << x[0] << x[1] << x[2] << x[3] << endl;
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+TEST(Integer, plus_digits_2) {
+    const int a[] = {0, 0, 0};
+    const int b[] = {0, 0, 0};
+    const int c[] = {0, 0, 0};
+          int x[10];
+    const int* p = plus_digits(a, a + 3, b, b + 3, x);
+    ASSERT_EQ(3, p - x);
+
+    // cout << x[0] << x[1] << x[2] << x[3] << endl;
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+TEST(Integer, plus_digits_3) {
+    const int a[] = {9, 9, 9};
+    const int b[] = {9, 9, 9};
+    const int c[] = {1, 9, 9, 8};
+          int x[10];
+    const int* p = plus_digits(a, a + 3, b, b + 3, x);
+    ASSERT_EQ(4, p - x);
+
+//    cout << x[0] << x[1] << x[2] << x[3] << endl;
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
+    TEST(Integer, plus_digits_4) {
+    const int a[] = {9, 9, 9, 9};
+    const int b[] = {9, 9, 9, 9};
+    const int c[] = {1 ,9 ,9, 9, 8};
+          int x[10];
+    const int* p = plus_digits(a, a + 4, b, b + 4, x);
+    ASSERT_EQ(5, p - x);
+
+//    cout << x[0] << x[1] << x[2] << x[3] << endl;
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+    TEST(Integer, plus_digits_5) {
+    const int a[] = {9, 8, 7, 6};
+    const int b[] = {2, 3, 4, 5};
+    const int c[] = {1 ,2 ,2, 2, 1};
+          int x[10];
+    const int* p = plus_digits(a, a + 4, b, b + 4, x);
+    ASSERT_EQ(5, p - x);
+
+//    cout << x[0] << x[1] << x[2] << x[3] << endl;
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
 
 // ------------
 // minus_digits
