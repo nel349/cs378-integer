@@ -84,235 +84,124 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
 	int size = distance(b1, e1);
 	int size2 = distance(b2, e2);
+
+	int biggestSize= max(size, size2);
 	FI y(x);
-    bool flag = false;
+	bool flag = false;
 
-	if(size != size2){
-        cout << "size: "<< size << " size2: "<< size2 << endl; 
-        int last = max(size, size2);
-        int i =0;
-        int j= 0;
-        int extra =1;
-        int temp =0;
 
-         int m = 0; 
-        cout << "Empty------1----------"<< endl;
-        while(m < max(size2, size) ){
-           cout << x[m] << "  ";
-           m++;
-        }
-        cout << endl;
-        int least = min(size2, size);
-        int l = 0;
-        while(e1 != b1 && e2 != b2 ){
-            ++l;
-            cout<< "INSIDE A" << endl;
-            --e1;
-            --e2;
-            
-            temp = *e1 + *e2;
-            cout<< "INSIDE A " << temp << endl;
+	int extra = 1;
+	int last = biggestSize;
 
-            if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
-                flag = true;
-            }
-            else if(flag){
-                flag = false;
-                --x;
-                *x=(temp + extra) % 10;
+	advance(x, biggestSize);
+	while(e1 != b1 && e2 != b2){
+		--e1;
+		--e2;
+		if(last == 1){
+			int temp;
+			if(flag)
+				temp = (*e1  + *e2 + extra);
+			else
+				temp = (*e1  + *e2 );
+			--x;
+			*x=temp;
+		}
+		else if(flag){
+			int temp = (*e1  + *e2 + extra) % 10;
+			flag = false;
+			--x;
+			*x=temp;
 
-            }
-            else{
-                --x;
-                *x=temp % 10;
+		}
+		else{
+			int temp = (*e1  + *e2) % 10;
+			--x;
+			*x=temp;
 
-            }
+		}
+		if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
+			flag = true;
+		}
+		--last;
+	}
+	while(e1 != b1){
+		--e1;
+		if(last == 1){
+			int temp;
+			if(flag)
+				temp = (*e1  +  extra);
+			else
+				temp = (*e1  );
+			--x;
+			*x=temp;
+		}
+		else if(flag){
+			int temp = (*e1  +  extra) % 10;
+			flag = false;
+			--x;
+			*x=temp;
 
-            i++;
-            j++;
-            l++;
-            --last;
-        }
+		}
+		else{
+			int temp = (*e1) % 10;
+			--x;
+			*x=temp;
 
-        m = 0; 
-        cout << "------2----------"<< endl;
-        while(m < max(size2, size) ){
-           cout << x[m] << "  ";
-           m++;
-        }
-        cout << endl;
-        while(e1 != b1){
-            --e1;
-            cout << "e1: "<< *e1 << endl; 
-            cout << "LAST : " << last << endl;
-            if((*e1 + extra)/10 == 1 ||  (*e1 + extra) ==10 ){
-                flag = true;
-            }
-            if(last == 1){
-                cout << "LAST : " << last << endl;
-                if(flag){
-                    flag =false;
-                    temp = (*e1 +extra);
-                    cout << "HERE B2 "<< temp << endl;
-                } 
-                else{
-                    temp = (*e1 );
+		}
+		if((*e1 )/10 == 1 ||  (*e1) ==10 || (*e1 + extra) ==10){
+			flag = true;
+		}
+		--last;
+	}
 
-                }
-                --x;
-                *x=temp;
-            }
-            else if(flag && last != 1){
-                 cout << "AQUIB" << endl;
+	while(e2 != b2){
+		--e2;
+		if(last == 1){
+			int temp;
+			if(flag)
+				temp = (*e2  +  extra);
+			else
+				temp = (*e2  );
+			--x;
+			*x=temp;
+		}
+		else if(flag){
+			int temp = (*e2  +  extra) % 10;
+			flag = false;
+			--x;
+			*x=temp;
 
-                flag = false;
-                --x;
-                *x=(*e1 + extra) %10;
+		}
+		else{
+			int temp = (*e2) % 10;
+			--x;
+			*x=temp;
 
-            }
-            else{
-                cout << "AQUIA" << endl;
-                --x;
-                *x=*e1 % 10;
-
-            }
-
-            --last;
-        }
-
-         m = 0; 
-        cout << "------3----------"<< endl;
-        while(m < max(size2, size) ){
-           cout << x[m] << "  ";
-           m++;
-        }
-        cout << endl;
-        while(e2 != b2){
-            cout << "e2: "<< *e2 << endl; 
-
-            --e2;
-            if(last == 1){
-                if(flag)
-                    temp = (*e2 +extra);
-                else
-                    temp = (*e2);
-                --x;
-                *x=temp;
-            }
-            else if(flag){
-                flag = false;
-                --x;
-                *x=(*e2 + extra) %10;
-
-            }
-            else{
-                --x;
-                *x=*e2 % 10;
-
-            }
-            if((*e2 + extra)/10 == 1 ||  (*e2 + extra) ==10 ){
-                flag = true;
-            }
-            --last;
-        }
-
-        m = 0; 
-        cout << "------4----------"<< endl;
-        cout << endl;
-        while(m < max(size2, size) ){
-           cout << x[m] << "  ";
-           m++;
-        }
-
-        if( to_string(x[0]).length() == 2){
-            string first = to_string(x[0]);
-            int f = (char)first[0] - '0';
-            int s = (char)first[1]- '0';
-            int n = 0;
-            n = size = max(size2, size) + 1;
-            while(n  + 1> 0){
-                y[n + 1] = x[n];
-                n--;
-            }
-            y[1] = s;
-            y[0] = f;
-
-        }
-
-        m = 0; 
-        cout << "------5----------"<< endl;
-        cout << endl;
-        while(m < max(size2, size) ){
-           cout << y[m] << "  ";
-           m++;
-        }
-
-        advance(y, size );
-
+		}
+		if((*e2 )/10 == 1 ||  (*e2) ==10 || (*e2 + extra) ==10){
+			flag = true;
+		}
+		--last;
 	}
 
 
-
-
-
-
-	else{
-
-
-		int extra = 1;
-		flag = false;
-		int last = size;
-
-		advance(x, size);
-		while(e1 != b1){
-			--e1;
-			--e2;
-			if(last == 1){
-				int temp;
-				if(flag)
-					temp = (*e1  + *e2 + extra);
-				else
-					temp = (*e1  + *e2 );
-				--x;
-				*x=temp;
-			}
-			else if(flag){
-				int temp = (*e1  + *e2 + extra) % 10;
-				flag = false;
-				--x;
-				*x=temp;
-
-			}
-			else{
-				int temp = (*e1  + *e2) % 10;
-				--x;
-				*x=temp;
-
-			}
-			if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
-				flag = true;
-			}
-			--last;
+	if( to_string(x[0]).length() == 2){
+		string first = to_string(x[0]);
+		int f = (char)first[0] - '0';
+		int s = (char)first[1]- '0';
+		int n = 0;
+		n = biggestSize;
+		while(n > 0){
+			y[n+1] = x[n];
+			n--;
 		}
+		y[1] = s;
+		y[0] = f;
+		biggestSize = biggestSize +1;
 
-		if( to_string(x[0]).length() == 2){
-			string first = to_string(x[0]);
-			int f = (char)first[0] - '0';
-			int s = (char)first[1]- '0';
-			int n = 0;
-			n = size;
-			while(n > 0){
-				y[n+1] = y[n];
-				n--;
-			}
-			y[1] = s;
-			y[0] = f;
-			size = size +1;
-
-		}
-
-		advance(y, size);
 	}
+
+	advance(y, biggestSize);
 
 	return y;}
 
