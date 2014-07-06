@@ -140,6 +140,31 @@ TEST(Integer, plus_digits_3) {
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
 
+    TEST(Integer, plus_digits_6) {
+    const int a[] = {9, 9, 9, 9};
+    const int b[] = {1};
+    const int c[] = {1 ,0 ,0, 0, 0};
+          int x[10];
+    const int* p = plus_digits(a, a + 4, b, b + 1, x);
+    ASSERT_EQ(5, p - x);
+
+   cout << x[0] << x[1] << x[2] << x[3] <<x[4]  << endl;
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+    TEST(Integer, plus_digits_7) {
+    const int a[] = {1, 9, 9, 9};
+    const int b[] = {1};
+    const int c[] = {2 ,0 ,0, 0};
+          int x[10];
+    const int* p = plus_digits(a, a + 4, b, b + 1, x);
+    ASSERT_EQ(4, p - x);
+
+   cout << x[0] << x[1] << x[2] << x[3] << endl;
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
 
 // ------------
 // minus_digits
@@ -153,6 +178,27 @@ TEST(Integer, minus_digits) {
     const int* p = minus_digits(a, a + 3, b, b + 3, x);
     ASSERT_EQ(3, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+// TEST(Integer, minus_digits_1) {
+//     const int a[] = {8, 0, 1};
+//     const int b[] = {5, 6, 7};
+//     const int c[] = {2, 3, 4};
+//           int x[10];
+//     const int* p = minus_digits(a, a + 3, b, b + 3, x);
+//     ASSERT_EQ(3, p - x);
+//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
+// TEST(Integer, minus_digits_2) {
+//     const int a[] = {8, 0, 1};
+//     const int b[] = {5, 6, 7};
+//     const int c[] = {2, 3, 4};
+//           int x[10];
+//     const int* p = minus_digits(a, a + 3, b, b + 3, x);
+//     ASSERT_EQ(3, p - x);
+//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
 // -----------------
 // multiplies_digits

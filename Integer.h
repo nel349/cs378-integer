@@ -34,16 +34,16 @@ using namespace std;
  */
 template <typename II, typename FI>
 FI shift_left_digits (II b, II e, int n, FI x) {
-    x = copy(b, e, x);
-//    FI y = x;
-//    advance(y, n);
+	x = copy(b, e, x);
+	//    FI y = x;
+	//    advance(y, n);
 
 
-    fill(x, x+n, 0);
-    advance(x,n);
+	fill(x, x+n, 0);
+	advance(x,n);
 
-    
-    return x;}
+
+	return x;}
 
 // ------------------
 // shift_right_digits
@@ -60,9 +60,9 @@ FI shift_left_digits (II b, II e, int n, FI x) {
  */
 template <typename II, typename FI>
 FI shift_right_digits (II b, II e, int n, FI x) {
-    x = copy(b, e-n, x);
+	x = copy(b, e-n, x);
 
-    return x;}
+	return x;}
 
 // -----------
 // plus_digits
@@ -82,105 +82,239 @@ FI shift_right_digits (II b, II e, int n, FI x) {
 template <typename II1, typename II2, typename FI>
 FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
-    int size = distance(b1, e1);
-    cout << "Size: " << size << " ";
-
-    FI y(x);
-
-
-
-
-    int extra = 1;
+	int size = distance(b1, e1);
+	int size2 = distance(b2, e2);
+	FI y(x);
     bool flag = false;
-    int last = size;
 
-    advance(x, size);
-    while(e1 != b1){
-        --e1;
-        --e2;
+	if(size != size2){
+        cout << "size: "<< size << " size2: "<< size2 << endl; 
+        int last = max(size, size2);
+        int i =0;
+        int j= 0;
+        int extra =1;
+        int temp =0;
 
-        if(last == 1){
-            int temp;
-            if(flag)
-                temp = (*e1  + *e2 + extra);
-            else
-                temp = (*e1  + *e2 );
-
-            // cout << temp  << "  ";
-            // flag = false;
-            --x;
-            *x=temp;
+         int m = 0; 
+        cout << "Empty------1----------"<< endl;
+        while(m < max(size2, size) ){
+           cout << x[m] << "  ";
+           m++;
         }
-        else if(flag){
-            int temp = (*e1  + *e2 + extra) % 10;
-            // cout << temp  << "  ";
-            flag = false;
-            --x;
-            *x=temp;
+        cout << endl;
+        int least = min(size2, size);
+        int l = 0;
+        while(e1 != b1 && e2 != b2 ){
+            ++l;
+            cout<< "INSIDE A" << endl;
+            --e1;
+            --e2;
             
+            temp = *e1 + *e2;
+            cout<< "INSIDE A " << temp << endl;
+
+            if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
+                flag = true;
+            }
+            else if(flag){
+                flag = false;
+                --x;
+                *x=(temp + extra) % 10;
+
+            }
+            else{
+                --x;
+                *x=temp % 10;
+
+            }
+
+            i++;
+            j++;
+            l++;
+            --last;
         }
-        else{
-            int temp = (*e1  + *e2) % 10;
-             // cout << temp << "  ";    
-            --x;    
-            *x=temp;
-                         
+
+        m = 0; 
+        cout << "------2----------"<< endl;
+        while(m < max(size2, size) ){
+           cout << x[m] << "  ";
+           m++;
         }
-        if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
-            // cout <<  (*e1 + *e2) % 10 << " ";
-             // cout << " when (*e1 + *e2) =  "<<(*e1 + *e2) <<  " " ;
+        cout << endl;
+        while(e1 != b1){
+            --e1;
+            cout << "e1: "<< *e1 << endl; 
+            cout << "LAST : " << last << endl;
+            if((*e1 + extra)/10 == 1 ||  (*e1 + extra) ==10 ){
+                flag = true;
+            }
+            if(last == 1){
+                cout << "LAST : " << last << endl;
+                if(flag){
+                    flag =false;
+                    temp = (*e1 +extra);
+                    cout << "HERE B2 "<< temp << endl;
+                } 
+                else{
+                    temp = (*e1 );
 
-            flag = true;
+                }
+                --x;
+                *x=temp;
+            }
+            else if(flag && last != 1){
+                 cout << "AQUIB" << endl;
+
+                flag = false;
+                --x;
+                *x=(*e1 + extra) %10;
+
+            }
+            else{
+                cout << "AQUIA" << endl;
+                --x;
+                *x=*e1 % 10;
+
+            }
+
+            --last;
         }
-        --last;
-    }
 
-
-
-    bool flag_first= false;
-
-    if( to_string(x[0]).length() == 2){
-    	string first = to_string(x[0]);
-    	int f = (char)first[0] - '0';
-    	int s = (char)first[1]- '0';
-
-//    	istringstream ( first[0] ) >> f;
-//    	istringstream ( first[1] ) >> s;
-    	// cout << "FIRST: " << f<< endl;
-    	// cout << "SECOND: " << s << endl;
-
-        int n = 0;
-        while(n < size){
-            cout << "Y at j:"<< n  <<" is "<< y[n] << endl;
-            n++;
+         m = 0; 
+        cout << "------3----------"<< endl;
+        while(m < max(size2, size) ){
+           cout << x[m] << "  ";
+           m++;
         }
-        n = size;
-        while(n > 0){
-            y[n+1] = y[n];
-            n--;
-        }   
-        y[1] = s;
-        y[0] = f;
+        cout << endl;
+        while(e2 != b2){
+            cout << "e2: "<< *e2 << endl; 
 
-        cout << "NEW Y\n" << endl;
-        n = 0;
-        while(n < size + 1){
-            // cout << "Y at j:"<< n  <<" is "<< y[n] << endl;
-            n++;
+            --e2;
+            if(last == 1){
+                if(flag)
+                    temp = (*e2 +extra);
+                else
+                    temp = (*e2);
+                --x;
+                *x=temp;
+            }
+            else if(flag){
+                flag = false;
+                --x;
+                *x=(*e2 + extra) %10;
+
+            }
+            else{
+                --x;
+                *x=*e2 % 10;
+
+            }
+            if((*e2 + extra)/10 == 1 ||  (*e2 + extra) ==10 ){
+                flag = true;
+            }
+            --last;
         }
-    	// y[0] = f;
-    	// int temp = y[1];
-    	// y[1] = s;
-    	// y[2] = temp;
 
-     //    cout << "NEW SIZE: "<< size << endl;
+        m = 0; 
+        cout << "------4----------"<< endl;
+        cout << endl;
+        while(m < max(size2, size) ){
+           cout << x[m] << "  ";
+           m++;
+        }
 
-     size = size +1;
+        if( to_string(x[0]).length() == 2){
+            string first = to_string(x[0]);
+            int f = (char)first[0] - '0';
+            int s = (char)first[1]- '0';
+            int n = 0;
+            n = size = max(size2, size) + 1;
+            while(n  + 1> 0){
+                y[n + 1] = x[n];
+                n--;
+            }
+            y[1] = s;
+            y[0] = f;
 
-    }
+        }
 
-    advance(y, size);
-    return y;}
+        m = 0; 
+        cout << "------5----------"<< endl;
+        cout << endl;
+        while(m < max(size2, size) ){
+           cout << y[m] << "  ";
+           m++;
+        }
+
+        advance(y, size );
+
+	}
+
+
+
+
+
+
+	else{
+
+
+		int extra = 1;
+		flag = false;
+		int last = size;
+
+		advance(x, size);
+		while(e1 != b1){
+			--e1;
+			--e2;
+			if(last == 1){
+				int temp;
+				if(flag)
+					temp = (*e1  + *e2 + extra);
+				else
+					temp = (*e1  + *e2 );
+				--x;
+				*x=temp;
+			}
+			else if(flag){
+				int temp = (*e1  + *e2 + extra) % 10;
+				flag = false;
+				--x;
+				*x=temp;
+
+			}
+			else{
+				int temp = (*e1  + *e2) % 10;
+				--x;
+				*x=temp;
+
+			}
+			if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
+				flag = true;
+			}
+			--last;
+		}
+
+		if( to_string(x[0]).length() == 2){
+			string first = to_string(x[0]);
+			int f = (char)first[0] - '0';
+			int s = (char)first[1]- '0';
+			int n = 0;
+			n = size;
+			while(n > 0){
+				y[n+1] = y[n];
+				n--;
+			}
+			y[1] = s;
+			y[0] = f;
+			size = size +1;
+
+		}
+
+		advance(y, size);
+	}
+
+	return y;}
 
 // ------------
 // minus_digits
@@ -199,8 +333,9 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
  */
 template <typename II1, typename II2, typename FI>
 FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-    // <your code>
-    return x;}
+
+	// <your code>
+	return x;}
 
 // -----------------
 // multiplies_digits
@@ -219,8 +354,8 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
  */
 template <typename II1, typename II2, typename FI>
 FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-    // <your code>
-    return x;}
+	// <your code>
+	return x;}
 
 // --------------
 // divides_digits
@@ -239,8 +374,8 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
  */
 template <typename II1, typename II2, typename FI>
 FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-    // <your code>
-    return x;}
+	// <your code>
+	return x;}
 
 // -------
 // Integer
@@ -248,370 +383,370 @@ FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
 template < typename T, typename C = std::vector<T> >
 class Integer {
-    // -----------
-    // operator ==
-    // -----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        // <your code>
-        return false;}
-
-    // -----------
-    // operator !=
-    // -----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator != (const Integer& lhs, const Integer& rhs) {
-        return !(lhs == rhs);}
-
-    // ----------
-    // operator <
-    // ----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator < (const Integer& lhs, const Integer& rhs) {
-        // <your code>
-        return false;}
-
-    // -----------
-    // operator <=
-    // -----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator <= (const Integer& lhs, const Integer& rhs) {
-        return !(rhs < lhs);}
-
-    // ----------
-    // operator >
-    // ----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator > (const Integer& lhs, const Integer& rhs) {
-        return (rhs < lhs);}
-
-    // -----------
-    // operator >=
-    // -----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator >= (const Integer& lhs, const Integer& rhs) {
-        return !(lhs < rhs);}
-
-    // ----------
-    // operator +
-    // ----------
-
-    /**
-     * <your documentation>
-     */
-    friend Integer operator + (Integer lhs, const Integer& rhs) {
-        return lhs += rhs;}
-
-    // ----------
-    // operator -
-    // ----------
-
-    /**
-     * <your documentation>
-     */
-    friend Integer operator - (Integer lhs, const Integer& rhs) {
-        return lhs -= rhs;}
-
-    // ----------
-    // operator *
-    // ----------
-
-    /**
-     * <your documentation>
-     */
-    friend Integer operator * (Integer lhs, const Integer& rhs) {
-        return lhs *= rhs;}
-
-    // ----------
-    // operator /
-    // ----------
-
-    /**
-     * <your documentation>
-     * @throws invalid_argument if (rhs == 0)
-     */
-    friend Integer operator / (Integer lhs, const Integer& rhs) {
-        return lhs /= rhs;}
-
-    // ----------
-    // operator %
-    // ----------
-
-    /**
-     * <your documentation>
-     * @throws invalid_argument if (rhs <= 0)
-     */
-    friend Integer operator % (Integer lhs, const Integer& rhs) {
-        return lhs %= rhs;}
-
-    // -----------
-    // operator <<
-    // -----------
-
-    /**
-     * <your documentation>
-     * @throws invalid_argument if (rhs < 0)
-     */
-    friend Integer operator << (Integer lhs, int rhs) {
-        return lhs <<= rhs;}
-
-    // -----------
-    // operator >>
-    // -----------
-
-    /**
-     * <your documentation>
-     * @throws invalid_argument if (rhs < 0)
-     */
-    friend Integer operator >> (Integer lhs, int rhs) {
-        return lhs >>= rhs;}
-
-    // -----------
-    // operator <<
-    // -----------
-
-    /**
-     * <your documentation>
-     */
-    friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
-        // <your code>
-        return lhs << "0";}
-
-    // ---
-    // abs
-    // ---
-
-    /**
-     * absolute value
-     * <your documentation>
-     */
-    friend Integer abs (Integer x) {
-        return x.abs();}
-
-    // ---
-    // pow
-    // ---
-
-    /**
-     * power
-     * <your documentation>
-     * @throws invalid_argument if ((x == 0) && (e == 0)) || (e < 0)
-     */
-    friend Integer pow (Integer x, int e) {
-        return x.pow(e);}
-
-    private:
-        // ----
-        // data
-        // ----
-
-        C _x; // the backing container
-        // <your data>
-
-    private:
-        // -----
-        // valid
-        // -----
-
-        bool valid () const { // class invariant
-            // <your code>
-            return true;}
-
-    public:
-        // ------------
-        // constructors
-        // ------------
-
-        /**
-         * <your documentation>
-         */
-        Integer (int value) {
-            // <your code>
-            assert(valid());}
-
-        /**
-         * <your documentation>
-         * @throws invalid_argument if value is not a valid representation of an Integer
-         */
-        explicit Integer (const std::string& value) {
-            // <your code>
-            if (!valid())
-                throw std::invalid_argument("Integer::Integer()");}
-
-        // Default copy, destructor, and copy assignment.
-        // Integer (const Integer&);
-        // ~Integer ();
-        // Integer& operator = (const Integer&);
-
-        // ----------
-        // operator -
-        // ----------
-
-        /**
-         * <your documentation>
-         */
-        Integer operator - () const {
-            // <your code>
-            return Integer(0);}
-
-        // -----------
-        // operator ++
-        // -----------
-
-        /**
-         * <your documentation>
-         */
-        Integer& operator ++ () {
-            *this += 1;
-            return *this;}
-
-        /**
-         * <your documentation>
-         */
-        Integer operator ++ (int) {
-            Integer x = *this;
-            ++(*this);
-            return x;}
-
-        // -----------
-        // operator --
-        // -----------
-
-        /**
-         * <your documentation>
-         */
-        Integer& operator -- () {
-            *this -= 1;
-            return *this;}
-
-        /**
-         * <your documentation>
-         */
-        Integer operator -- (int) {
-            Integer x = *this;
-            --(*this);
-            return x;}
-
-        // -----------
-        // operator +=
-        // -----------
-
-        /**
-         * <your documentation>
-         */
-        Integer& operator += (const Integer& rhs) {
-            // <your code>
-            return *this;}
-
-        // -----------
-        // operator -=
-        // -----------
-
-        /**
-         * <your documentation>
-         */
-        Integer& operator -= (const Integer& rhs) {
-            // <your code>
-            return *this;}
-
-        // -----------
-        // operator *=
-        // -----------
-
-        /**
-         * <your documentation>
-         */
-        Integer& operator *= (const Integer& rhs) {
-            // <your code>
-            return *this;}
-
-        // -----------
-        // operator /=
-        // -----------
-
-        /**
-         * <your documentation>
-         * @throws invalid_argument if (rhs == 0)
-         */
-        Integer& operator /= (const Integer& rhs) {
-            // <your code>
-            return *this;}
-
-        // -----------
-        // operator %=
-        // -----------
-
-        /**
-         * <your documentation>
-         * @throws invalid_argument if (rhs <= 0)
-         */
-        Integer& operator %= (const Integer& rhs) {
-            // <your code>
-            return *this;}
-
-        // ------------
-        // operator <<=
-        // ------------
-
-        /**
-         * <your documentation>
-         */
-        Integer& operator <<= (int n) {
-            // <your code>
-            return *this;}
-
-        // ------------
-        // operator >>=
-        // ------------
-
-        /**
-         * <your documentation>
-         */
-        Integer& operator >>= (int n) {
-            // <your code>
-            return *this;}
-
-        // ---
-        // abs
-        // ---
-
-        /**
-         * absolute value
-         * <your documentation>
-         */
-        Integer& abs () {
-            // <your code>
-            return *this;}
-
-        // ---
-        // pow
-        // ---
-
-        /**
-         * power
-         * <your documentation>
-         * @throws invalid_argument if ((this == 0) && (e == 0)) or (e < 0)
-         */
-        Integer& pow (int e) {
-            // <your code>
-            return *this;}};
+	// -----------
+	// operator ==
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend bool operator == (const Integer& lhs, const Integer& rhs) {
+		// <your code>
+		return false;}
+
+	// -----------
+	// operator !=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend bool operator != (const Integer& lhs, const Integer& rhs) {
+		return !(lhs == rhs);}
+
+	// ----------
+	// operator <
+	// ----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend bool operator < (const Integer& lhs, const Integer& rhs) {
+		// <your code>
+		return false;}
+
+	// -----------
+	// operator <=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend bool operator <= (const Integer& lhs, const Integer& rhs) {
+		return !(rhs < lhs);}
+
+	// ----------
+	// operator >
+	// ----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend bool operator > (const Integer& lhs, const Integer& rhs) {
+		return (rhs < lhs);}
+
+	// -----------
+	// operator >=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend bool operator >= (const Integer& lhs, const Integer& rhs) {
+		return !(lhs < rhs);}
+
+	// ----------
+	// operator +
+	// ----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend Integer operator + (Integer lhs, const Integer& rhs) {
+		return lhs += rhs;}
+
+	// ----------
+	// operator -
+	// ----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend Integer operator - (Integer lhs, const Integer& rhs) {
+		return lhs -= rhs;}
+
+	// ----------
+	// operator *
+	// ----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend Integer operator * (Integer lhs, const Integer& rhs) {
+		return lhs *= rhs;}
+
+	// ----------
+	// operator /
+	// ----------
+
+	/**
+	 * <your documentation>
+	 * @throws invalid_argument if (rhs == 0)
+	 */
+	friend Integer operator / (Integer lhs, const Integer& rhs) {
+		return lhs /= rhs;}
+
+	// ----------
+	// operator %
+	// ----------
+
+	/**
+	 * <your documentation>
+	 * @throws invalid_argument if (rhs <= 0)
+	 */
+	friend Integer operator % (Integer lhs, const Integer& rhs) {
+		return lhs %= rhs;}
+
+	// -----------
+	// operator <<
+	// -----------
+
+	/**
+	 * <your documentation>
+	 * @throws invalid_argument if (rhs < 0)
+	 */
+	friend Integer operator << (Integer lhs, int rhs) {
+		return lhs <<= rhs;}
+
+	// -----------
+	// operator >>
+	// -----------
+
+	/**
+	 * <your documentation>
+	 * @throws invalid_argument if (rhs < 0)
+	 */
+	friend Integer operator >> (Integer lhs, int rhs) {
+		return lhs >>= rhs;}
+
+	// -----------
+	// operator <<
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
+		// <your code>
+		return lhs << "0";}
+
+	// ---
+	// abs
+	// ---
+
+	/**
+	 * absolute value
+	 * <your documentation>
+	 */
+	friend Integer abs (Integer x) {
+		return x.abs();}
+
+	// ---
+	// pow
+	// ---
+
+	/**
+	 * power
+	 * <your documentation>
+	 * @throws invalid_argument if ((x == 0) && (e == 0)) || (e < 0)
+	 */
+	friend Integer pow (Integer x, int e) {
+		return x.pow(e);}
+
+private:
+	// ----
+	// data
+	// ----
+
+	C _x; // the backing container
+	// <your data>
+
+private:
+	// -----
+	// valid
+	// -----
+
+	bool valid () const { // class invariant
+		// <your code>
+		return true;}
+
+public:
+	// ------------
+	// constructors
+	// ------------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer (int value) {
+		// <your code>
+		assert(valid());}
+
+	/**
+	 * <your documentation>
+	 * @throws invalid_argument if value is not a valid representation of an Integer
+	 */
+	explicit Integer (const std::string& value) {
+		// <your code>
+		if (!valid())
+			throw std::invalid_argument("Integer::Integer()");}
+
+	// Default copy, destructor, and copy assignment.
+	// Integer (const Integer&);
+	// ~Integer ();
+	// Integer& operator = (const Integer&);
+
+	// ----------
+	// operator -
+	// ----------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer operator - () const {
+		// <your code>
+		return Integer(0);}
+
+	// -----------
+	// operator ++
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer& operator ++ () {
+		*this += 1;
+		return *this;}
+
+	/**
+	 * <your documentation>
+	 */
+	Integer operator ++ (int) {
+		Integer x = *this;
+		++(*this);
+		return x;}
+
+	// -----------
+	// operator --
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer& operator -- () {
+		*this -= 1;
+		return *this;}
+
+	/**
+	 * <your documentation>
+	 */
+	Integer operator -- (int) {
+		Integer x = *this;
+		--(*this);
+		return x;}
+
+	// -----------
+	// operator +=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer& operator += (const Integer& rhs) {
+		// <your code>
+		return *this;}
+
+	// -----------
+	// operator -=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer& operator -= (const Integer& rhs) {
+		// <your code>
+		return *this;}
+
+	// -----------
+	// operator *=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer& operator *= (const Integer& rhs) {
+		// <your code>
+		return *this;}
+
+	// -----------
+	// operator /=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 * @throws invalid_argument if (rhs == 0)
+	 */
+	Integer& operator /= (const Integer& rhs) {
+		// <your code>
+		return *this;}
+
+	// -----------
+	// operator %=
+	// -----------
+
+	/**
+	 * <your documentation>
+	 * @throws invalid_argument if (rhs <= 0)
+	 */
+	Integer& operator %= (const Integer& rhs) {
+		// <your code>
+		return *this;}
+
+	// ------------
+	// operator <<=
+	// ------------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer& operator <<= (int n) {
+		// <your code>
+		return *this;}
+
+	// ------------
+	// operator >>=
+	// ------------
+
+	/**
+	 * <your documentation>
+	 */
+	Integer& operator >>= (int n) {
+		// <your code>
+		return *this;}
+
+	// ---
+	// abs
+	// ---
+
+	/**
+	 * absolute value
+	 * <your documentation>
+	 */
+	Integer& abs () {
+		// <your code>
+		return *this;}
+
+	// ---
+	// pow
+	// ---
+
+	/**
+	 * power
+	 * <your documentation>
+	 * @throws invalid_argument if ((this == 0) && (e == 0)) or (e < 0)
+	 */
+	Integer& pow (int e) {
+		// <your code>
+		return *this;}};
 
 #endif // Integer_h

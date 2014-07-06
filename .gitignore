@@ -8,3 +8,4 @@
 *.gcno
 .cproject
 .settings/
+*.gcov
