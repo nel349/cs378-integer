@@ -223,16 +223,18 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
     int size = distance(b1, e1);
     int size2 = distance(b2, e2);
-
     int biggestSize= max(size, size2);
-    // FI y(x);
     bool flag = false;
     bool flag_prev = false;
     int need_extra = 10;
-    // int last = biggestSize;
     advance(x, biggestSize);
     int curr_e1 = *e1;
     int prev_e1 = 0;
+    if( size < size2){
+
+        swap(e1, e2);
+        swap(b1, b2);
+    }
     while(e1 != b1 && e2 != b2){
         --e1;
         --e2;
@@ -245,21 +247,13 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
         }
 
         if(*e2 > *e1 && e1 != b1  &&  *e2 > curr_e1  ){
-             cout << "current *e2: " << *e2 << " and my current *e1: "<< curr_e1 << endl;
-
             --e1;
             prev_e1 = *e1 -1 ;
-
             ++e1;
-
             flag = true;
             flag_prev =true;
         }
        
-            // --e1;
-            // cout << "THIS IS CURRENT : " << *e1 << endl;
-
-             cout << "This is previous *e1: " << prev_e1 << " and my current *e1: "<< curr_e1 << endl;
         int temp = 0;
 
         if(flag){
@@ -278,9 +272,39 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
     }
 
+    while(e1 != b1){
+        --e1;
+        --x;
+        if(flag_prev){
+            *x = *e1 - 1;
+        }
+        else{
+            *x = *e1;
+        }
+        
+    }
+
+    while(e2 != b2){
+        --e2;
+        --x;
+        *x = -(*e2);
+    }
+
     advance(x, biggestSize );
 
 	return x;}
+
+
+void printVector(vector< vector<int> > v){
+    for(int i =0; i < (int)v.size() ; ++i){
+
+        for(int j =0; j < (int)v[0].size(); ++j){
+            cout << v[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+}
 
 // -----------------
 // multiplies_digits
@@ -299,8 +323,87 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
  */
 template <typename II1, typename II2, typename FI>
 FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-	// <your code>
-	return x;}
+    int size = distance(b1, e1);
+    int size2 = distance(b2, e2);
+
+    if( size2 > size){
+        swap(e1, e2);
+        swap(b1, b2);
+    }
+  
+
+    int biggestSize= max(size, size2);
+    vector< vector<int> > result ={};
+
+    advance(x, biggestSize);
+
+    int last =0;
+    II1 o_e1 = e1;
+    // II1 o_b1 = b1;
+    // II2 o_e2 = e2;
+    // II2 o_b2 = b2;
+    int temp_extra = 0;
+    // int  i = 0;
+    // int  j = 0;
+    while(e1 != b1 && e2 != b2){
+        vector<int> row = {};
+        temp_extra = 0;// --e1;
+        --e2;
+        int temp = 0;
+        last =biggestSize;
+        // j=0;
+        while(e1 != b1){
+            --e1;
+            temp = *e1 *  *e2;
+
+            // if( last != 1)                        
+            int re = (temp % 10) + temp_extra;
+            
+            if(re / 10  == 1){
+                temp_extra = (*e1 *  *e2)/ 10 + 1;
+                
+                    re = (re % 10);
+                
+            }
+            else{
+                if(last != 1)
+                    temp_extra = (*e1 *  *e2)/ 10;
+            }
+            if(last == 1){
+                re = temp + temp_extra; 
+                string s_re = to_string(re);
+                row.push_back( (int)((char)s_re[1] - '0') );  
+                row.push_back( (int)((char)s_re[0] - '0') );
+                         
+            }
+            else{
+                row.push_back(re);
+            }
+
+
+            cout << "*e1:" << *e1 << " e2:" << *e2 << " = " << re << " and my number is : "<< temp_extra<<endl;
+
+             // row.push_back(re);
+            
+            // cout << "*e1:" << *e1 << " e2:" << *e2 << " = " << temp << " and passing extra: "<< temp_extra<<endl;
+            
+            // ++j;
+            --last;  
+        }
+        result.push_back(row);
+        e1 = o_e1; 
+
+
+        // ++i;
+        cout << endl;
+    }
+
+    printVector(result);
+
+    return x;}
+
+
+
 
 // --------------
 // divides_digits
