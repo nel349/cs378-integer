@@ -333,9 +333,9 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
   
 
     int biggestSize= max(size, size2);
-    vector< vector<int> > result ={};
+    vector< vector<int> > sums ={};
 
-    advance(x, biggestSize);
+    
 
     int last =0;
     II1 o_e1 = e1;
@@ -390,7 +390,10 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
             // ++j;
             --last;  
         }
-        result.push_back(row);
+        row.resize(biggestSize + 1);
+        vector<int> r_row = row;
+        reverse_copy(row.begin(), row.end(), r_row.begin() );
+        sums.push_back(r_row);
         e1 = o_e1; 
 
 
@@ -398,8 +401,51 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
         cout << endl;
     }
 
-    printVector(result);
+    int size_result = (int)sums[0].size() + sums.size() - 1;
+    cout << "THIS IS THE SIZE OF OF OUR RESULT " << size_result  << endl;
 
+
+
+    printVector(sums);
+
+
+    vector< vector<int>> result = {};
+    for(int i =0; i < (int)sums.size() ; i++){
+    	vector<int> pad(size_result, 0);
+    	int m = size_result - sums.size() -1 - i;
+    	cout << "m is : " << m << endl;
+    	cout << "size_result: " << size_result << endl;
+    	for(int j = 0; j < size_result && m < size_result; j++){
+    		pad[m] = sums[i][j];
+    		++m;
+    	}
+    	result.push_back(pad);
+    	
+    }	
+	// int xx[size_result];
+    printVector(result);
+    // vector<int> final_result(size_result, 0);
+    // int sum =0;
+    // int x_sum[size_result];
+    vector<int> temp(result[0]);
+    vector<int> temp_r(size_result, 0);
+    // x_sum= copy(result[0].begin(), result[0].end(), x_sum);
+    for(int i = 0; i +1 < (int)result.size(); ++i){
+    	// x_sum = copy(xx.begin(), xx.end(), x_sum);
+
+    	plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
+    	// x_sum= copy(xx.begin(), xx.end(), x_sum);
+    	for (int i = 0; i < (int)temp_r.size(); i++ ){
+    		cout << temp_r[i] << " "; 
+    	}
+
+    	temp = temp_r;
+    	cout << endl;
+    }
+
+    copy(temp_r.begin(), temp_r.end(), x);
+	advance(x, size_result);
+   
     return x;}
 
 
