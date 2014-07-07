@@ -140,13 +140,11 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 			flag = false;
 			--x;
 			*x=temp;
-
 		}
 		else{
 			int temp = (*e1) % 10;
 			--x;
 			*x=temp;
-
 		}
 		if((*e1 )/10 == 1 ||  (*e1) ==10 || (*e1 + extra) ==10){
 			flag = true;
@@ -223,7 +221,65 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 template <typename II1, typename II2, typename FI>
 FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
-	// <your code>
+    int size = distance(b1, e1);
+    int size2 = distance(b2, e2);
+
+    int biggestSize= max(size, size2);
+    // FI y(x);
+    bool flag = false;
+    bool flag_prev = false;
+    int need_extra = 10;
+    // int last = biggestSize;
+    advance(x, biggestSize);
+    int curr_e1 = *e1;
+    int prev_e1 = 0;
+    while(e1 != b1 && e2 != b2){
+        --e1;
+        --e2;
+
+         curr_e1 = *e1;
+
+        if( flag_prev){
+            curr_e1 = prev_e1;
+            flag_prev = false;
+        }
+
+        if(*e2 > *e1 && e1 != b1  &&  *e2 > curr_e1  ){
+             cout << "current *e2: " << *e2 << " and my current *e1: "<< curr_e1 << endl;
+
+            --e1;
+            prev_e1 = *e1 -1 ;
+
+            ++e1;
+
+            flag = true;
+            flag_prev =true;
+        }
+       
+            // --e1;
+            // cout << "THIS IS CURRENT : " << *e1 << endl;
+
+             cout << "This is previous *e1: " << prev_e1 << " and my current *e1: "<< curr_e1 << endl;
+        int temp = 0;
+
+        if(flag){
+            flag = false;
+           temp = ( need_extra + curr_e1 ) - *e2;
+
+           --x;
+           *x= temp;
+        }
+        else{
+            temp =  curr_e1  - *e2;
+
+           --x;
+           *x= temp;
+        }
+
+    }
+
+    advance(x, biggestSize );
+
 	return x;}
 
 // -----------------
