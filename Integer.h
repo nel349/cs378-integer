@@ -97,29 +97,44 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 	while(e1 != b1 && e2 != b2){
 		--e1;
 		--e2;
+
+
 		if(last == 1){
 			int temp;
-			if(flag)
+			if(flag){
+				// cout << "A" << " ";
 				temp = (*e1  + *e2 + extra);
-			else
+			}
+				
+			else{
+				// cout << "B" << " ";
 				temp = (*e1  + *e2 );
+			}	
+				
 			--x;
 			*x=temp;
 		}
 		else if(flag){
+			// cout << "C" << " ";
 			int temp = (*e1  + *e2 + extra) % 10;
-			flag = false;
+			if(!(*e1  + *e2 + extra >= 10) ){
+				// cout << "ENTERS AFTER 0"<< " ";
+				flag = false;
+			}
+			
 			--x;
 			*x=temp;
 
 		}
 		else{
 			int temp = (*e1  + *e2) % 10;
+			// cout << "D" << " ";
 			--x;
 			*x=temp;
 
 		}
-		if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 || (*e1 + *e2 + extra) ==10){
+
+		if((*e1 + *e2)/10 == 1 ||  (*e1 + *e2) ==10 ){
 			flag = true;
 		}
 		--last;
@@ -323,6 +338,14 @@ void printVector(vector< vector<int> > v){
  */
 template <typename II1, typename II2, typename FI>
 FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
+	--e1;
+	int first_value = *e1;
+	++e1;
+	--e2;
+	int second_value = *e2;
+	++e2;
+	cout << "First Value = " <<  first_value << endl;
+
     int size = distance(b1, e1);
     int size2 = distance(b2, e2);
 
@@ -333,6 +356,8 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
   
 
     int biggestSize= max(size, size2);
+    int smallestSize = min(size, size2);
+
     vector< vector<int> > sums ={};
 
     
@@ -372,8 +397,14 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
             if(last == 1){
                 re = temp + temp_extra; 
                 string s_re = to_string(re);
-                row.push_back( (int)((char)s_re[1] - '0') );  
-                row.push_back( (int)((char)s_re[0] - '0') );
+                cout << "THIS IS LAST : " << s_re << endl;
+                if(s_re.size() == 2){
+                	row.push_back( (int)((char)s_re[1] - '0') );  
+                	row.push_back( (int)((char)s_re[0] - '0') );
+                }
+                else{
+                	row.push_back(re);
+                }
                          
             }
             else{
@@ -383,25 +414,44 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
             cout << "*e1:" << *e1 << " e2:" << *e2 << " = " << re << " and my number is : "<< temp_extra<<endl;
 
-             // row.push_back(re);
-            
-            // cout << "*e1:" << *e1 << " e2:" << *e2 << " = " << temp << " and passing extra: "<< temp_extra<<endl;
-            
-            // ++j;
             --last;  
         }
-        row.resize(biggestSize + 1);
         vector<int> r_row = row;
         reverse_copy(row.begin(), row.end(), r_row.begin() );
         sums.push_back(r_row);
         e1 = o_e1; 
 
-
-        // ++i;
         cout << endl;
     }
 
-    int size_result = (int)sums[0].size() + sums.size() - 1;
+    int size_result;
+    int t = first_value * second_value;
+
+    if(( (size == 1 && size2 == 1)  && t < 10 ) ){
+    	size_result = 1;
+    }
+    else if(( (size == 1 && size2 == 1)  && t > 10 )){
+    	size_result = 2;
+
+    }
+    else if(smallestSize == 1){
+    	size_result = biggestSize;
+    }
+    else{
+    	size_result = (int)sums[0].size() + sums.size() - 1;
+    }
+ 	int mm;
+    if(smallestSize == 1){
+    	mm = 0;
+    }
+    else if(smallestSize ==2){
+    	mm =1;
+    }
+    else{
+    	mm =2;
+    }
+    	
+
     cout << "THIS IS THE SIZE OF OF OUR RESULT " << size_result  << endl;
 
 
@@ -410,15 +460,23 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
 
     vector< vector<int>> result = {};
+    // int m = size_result - sums.size() -1 - i;
+
+   
+    int m =mm;
     for(int i =0; i < (int)sums.size() ; i++){
     	vector<int> pad(size_result, 0);
-    	int m = size_result - sums.size() -1 - i;
+    	
+    	if(mm >=0){
+    		m = mm--;
+    	}	
     	cout << "m is : " << m << endl;
     	cout << "size_result: " << size_result << endl;
-    	for(int j = 0; j < size_result && m < size_result; j++){
+    	for(int j = 0; j < size_result && m < size_result - i; j++){
     		pad[m] = sums[i][j];
     		++m;
     	}
+
     	result.push_back(pad);
     	
     }	
@@ -426,15 +484,25 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
     printVector(result);
     // vector<int> final_result(size_result, 0);
     // int sum =0;
+
+
+
+
+
+
+
     // int x_sum[size_result];
     vector<int> temp(result[0]);
     vector<int> temp_r(size_result, 0);
     // x_sum= copy(result[0].begin(), result[0].end(), x_sum);
-    for(int i = 0; i +1 < (int)result.size(); ++i){
+  
+    for(int i = 0; i +1 < (int)result.size() ; ++i){
     	// x_sum = copy(xx.begin(), xx.end(), x_sum);
 
-    	plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
+    	// plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
     	// x_sum= copy(xx.begin(), xx.end(), x_sum);
+		plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
+	
     	for (int i = 0; i < (int)temp_r.size(); i++ ){
     		cout << temp_r[i] << " "; 
     	}
@@ -443,7 +511,12 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
     	cout << endl;
     }
 
-    copy(temp_r.begin(), temp_r.end(), x);
+    copy(temp.begin(), temp.end(), x);
+
+
+    for (int i = 0; i < 9; i++ ){
+    		cout << x[i] << " "; 
+    	}
 	advance(x, size_result);
    
     return x;}
