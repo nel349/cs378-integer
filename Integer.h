@@ -550,6 +550,11 @@ FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
 template < typename T, typename C = std::vector<T> >
 class Integer {
+
+
+
+
+
 	// -----------
 	// operator ==
 	// -----------
@@ -720,13 +725,18 @@ class Integer {
 	friend Integer pow (Integer x, int e) {
 		return x.pow(e);}
 
-private:
+public:
 	// ----
 	// data
 	// ----
 
-	C _x; // the backing container
-	// <your data>
+	// C _x; // the backing container
+	
+	 C container;
+	 bool negative= false; //If negative -->true
+	 int size;
+
+
 
 private:
 	// -----
@@ -746,15 +756,69 @@ public:
 	 * <your documentation>
 	 */
 	Integer (int value) {
-		// <your code>
-		assert(valid());}
+		int t_value = value;
+		int sized = 0;
+		
+		
+
+		if(value > 0){
+			negative = false;
+		}else if(value == 0){
+			container.push_back(0);
+			++size;
+
+		}	
+		else{
+			negative = true;
+			t_value = value * (-1);
+			sized = to_string(t_value).size();
+		}
+		sized = to_string(t_value).size();
+		int index = sized - 1;
+		vector<int> c(sized, 0);
+		while(t_value != 0){
+		
+			c[index] = t_value %10;
+				
+			t_value = t_value/10;
+			
+			--index;
+		}
+
+		container = c;
+		assert(valid());
+	}
 
 	/**
 	 * <your documentation>
 	 * @throws invalid_argument if value is not a valid representation of an Integer
 	 */
 	explicit Integer (const std::string& value) {
-		// <your code>
+
+		bool vd = true;
+
+		if( !isdigit(value[0] ) && value[0] != '-' ) {
+				cout << "NOT VALID: " << value[0]<<endl;
+				throw std::invalid_argument("Integer()");
+				vd = false;
+		}
+		for(int i = 1; i < (int)value.size(); ++i){
+
+			if( !isdigit(value[i] ) ) {
+				cout << "NOT VALID: " << value[i]<<endl;
+				throw std::invalid_argument("Integer()");
+				vd = false;
+			}
+		}
+
+		// istringstream(value) >> v;
+		if(vd){
+					cout << "VAlID: "<< atoi(value.c_str()) << endl;
+
+			Integer<int> x(atoi(value.c_str()));
+		}
+		
+
 		if (!valid())
 			throw std::invalid_argument("Integer::Integer()");}
 

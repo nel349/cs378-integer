@@ -362,24 +362,77 @@ TEST(Integer, multiplies_digits_1) {
 // constructor
 // -----------
 
-// TEST(Integer, constructor_1) {
+TEST(Integer, constructor_1) {
+    try {
+        const Integer<int> x("abc");
+        ASSERT_TRUE(false);}
+    catch (std::invalid_argument& e) {
+        ASSERT_STREQ("Integer()", e.what());}}
+
+TEST(Integer, constructor_2) {
+    try {
+        const Integer<int> x("2");}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, constructor_3) {
+    try {
+        const Integer<int> x(2);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, constructor_4) {
+    try {
+        const Integer<int> x("-22");}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+
+TEST(Integer, constructor_5) {
+    try {
+        const Integer<int> x("-3--");
+       ASSERT_TRUE(false);}
+    catch (std::invalid_argument& e) {
+        ASSERT_STREQ("Integer()", e.what());}}
+
+
+
+TEST(Integer, constructor_6) {
+    
+        const Integer<int> x(223);
+  
+
+    vector<int>  c {2,2,3};
+    cout << x.container[0] << " " << x.container[1]  << " " << x.container[2] << endl;          
+
+    // ASSERT_EQ(2, c - x);
+    ASSERT_TRUE(std::equal(x.container.begin(), x.container.end(), c.begin()) );
+}
+
+
+TEST(Integer, constructor_7) {
+    
+        const Integer<int> x(-23443433);
+  
+
+    vector<int>  c {2,3,4,4,3,4,3,3};
+    cout << x.container[0] << " " << x.container[1]  << " " << x.container[2] << endl;          
+
+    // ASSERT_EQ(2, c - x);
+    ASSERT_TRUE(std::equal(x.container.begin(), x.container.end(), c.begin()) );
+}
+
+
+// TEST(Integer, constructor_5) {
 //     try {
-//         const Integer<int> x("abc");
-//         ASSERT_TRUE(false);}
+//         const Integer<int> x("-3--");
+//        ASSERT_TRUE(false);}
 //     catch (std::invalid_argument& e) {
 //         ASSERT_STREQ("Integer()", e.what());}}
 
-// TEST(Integer, constructor_2) {
-//     try {
-//         const Integer<int> x("2");}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
 
-// TEST(Integer, constructor_3) {
-//     try {
-//         const Integer<int> x(2);}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
+
+
 
 // ---
 // abs

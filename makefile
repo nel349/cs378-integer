@@ -40,3 +40,4 @@ TestInteger.out: TestInteger
 	-valgrind TestInteger
 	gcov-4.7 -b TestInteger.c++
 	cat         TestInteger.c++.gcov
+
