@@ -728,7 +728,7 @@ class Integer {
 		if(rhs.negative){
 			lhs << "-";
 		}
-		for(int i =0; i< rhs.container.size() ; ++i){
+		for(int i =0; i< (int)rhs.container.size() ; ++i){
 			lhs << rhs.container[i];
 		}
 
@@ -925,8 +925,38 @@ public:
 	 * <your documentation>
 	 */
 	Integer& operator += (const Integer& rhs) {
-		// <your code>
-		return *this;}
+            
+            C result(this->container.size() + rhs.container.size());
+            typename C::iterator endPlus;
+            
+            if(this->negative == true && rhs.negative == false){
+
+            }
+                // endPlus = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
+            else if(this->negative == false && rhs.negative == true){
+                // endPlus = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
+            }else if(this->negative == false && rhs.negative == false){                
+                endPlus = plus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());;
+                negative = false;
+            }else{
+                endPlus = plus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
+            }
+            
+            // result.erase(endPlus, result.end());
+
+
+            container = result;
+            // container.resize(result.size());
+            // typename C::reverse_iterator beginCont = container.rbegin();
+            // typename C::iterator beginResult = result.begin();
+            // while(beginResult != result.end()){
+            //     *beginCont = *beginResult;
+            //     ++beginResult;
+            //     ++beginCont;
+            // }
+
+            return *this;
+	}
 
 	// -----------
 	// operator -=

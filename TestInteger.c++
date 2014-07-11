@@ -535,18 +535,6 @@ TEST(Integer, constructor_7) {
      try {
          const Integer<int> x = 98765;
          const Integer<int> y = 98765;
-
-//         for(int i = 0 ; i < x.size; i++){
-//        	 cout << x.container[i]  << " " ;
-//         }
-//         if(x == y){
-//        	 cout<<"THEY ARE EQUAL" <<endl;
-//         }
-//         cout << "Size x: "<< x.size << endl;
-//         cout << "Size y: "<< y.size << endl;
-//
-//         cout << "Negative x: "<< x.negative << endl;
-//         cout << "Negative y: "<< y.negative << endl;
          ASSERT_EQ(      x, y);
      }
      catch (std::invalid_argument& e) {
@@ -558,18 +546,6 @@ TEST(Integer, constructor_7) {
       try {
           const Integer<int> x = -765;
           const Integer<int> y = -765;
-
- //         for(int i = 0 ; i < x.size; i++){
- //        	 cout << x.container[i]  << " " ;
- //         }
- //         if(x == y){
- //        	 cout<<"THEY ARE EQUAL" <<endl;
- //         }
- //         cout << "Size x: "<< x.size << endl;
- //         cout << "Size y: "<< y.size << endl;
- //
- //         cout << "Negative x: "<< x.negative << endl;
- //         cout << "Negative y: "<< y.negative << endl;
           ASSERT_EQ(      x, y);
       }
       catch (std::invalid_argument& e) {
@@ -590,6 +566,36 @@ TEST(Integer, constructor_7) {
      catch (std::invalid_argument& e) {
          ASSERT_TRUE(false);}}
 
+
+
+  TEST(Integer, plus_equal_1) {
+
+    Integer<int> x = 0;
+
+    Integer<int> y = 6;
+
+    const Integer<int> z = 6;
+
+    x += y;
+
+    ASSERT_EQ(x, z);
+  }
+
+
+  TEST(Integer, plus_equal_2) {
+
+    Integer<int> x = 3;
+
+    Integer<int> y = 6;
+
+    const Integer<int> z = 9;
+
+    x += y;
+
+    ASSERT_EQ(x, z);
+  }
+
+    // ASSERT_EQ(z, x);
 // ---
 // pow
 // ---
