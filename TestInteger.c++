@@ -75,6 +75,15 @@ TEST(Integer, shift_right_digits) {
     ASSERT_EQ(1, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
 
+TEST(Integer, shift_right_digits_1) {
+    const int a[] = {2, 3, 4};
+    const int b[] = {0};
+          int x[10];
+    const int* p = shift_right_digits(a, a + 3, 3, x);
+    cout << x[0] << endl;
+    ASSERT_EQ(1, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
+
 // -----------
 // plus_digits
 // -----------
@@ -345,6 +354,17 @@ TEST(Integer, multiplies_digits_1) {
     ASSERT_EQ(8, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+
+    TEST(Integer, multiplies_digits_6) {
+    const int a[] = {2, 3};
+    const int b[] = {1};
+    const int c[] = {2, 3};
+          int x[10];
+    const int* p = multiplies_digits(a, a + 2, b, b + 1, x);
+    cout << x[0] <<"   " <<x[1] << "  "<< endl;
+    ASSERT_EQ(2, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
 // --------------
 // divides_digits
 // --------------
@@ -432,68 +452,143 @@ TEST(Integer, constructor_7) {
 
 
 
+// --------
+// negation
+// --------
+
+ TEST(Integer, negation) {
+     try {
+         const Integer<int> x = 98765;
+         const Integer<int> y = -x;
+
+//         for(int i=0; i < y.size; i++){
+//        	 cout << y.container[i]<< "-";
+//         }
+//         cout << endl;
+
+         ASSERT_EQ(-98765, y);}
+     catch (std::invalid_argument& e) {
+         ASSERT_TRUE(false);}}
+
+ TEST(Integer, negation_1) {
+     try {
+         const Integer<int> x = -1;
+         const Integer<int> y = -x;
+
+//         for(int i=0; i < y.size; i++){
+//        	 cout << y.container[i]<< "-";
+//         }
+//         cout << endl;
+
+         ASSERT_EQ(1, y);}
+     catch (std::invalid_argument& e) {
+         ASSERT_TRUE(false);}}
+
+
+ TEST(Integer, negation_2) {
+     try {
+         const Integer<int> x = -765;
+         const Integer<int> y = -x;
+
+//         for(int i=0; i < y.size; i++){
+//        	 cout << y.container[i]<< "-";
+//         }
+//         cout << endl;
+
+         ASSERT_EQ(765, y);}
+     catch (std::invalid_argument& e) {
+         ASSERT_TRUE(false);}}
+
+
 
 
 // ---
 // abs
 // ---
 
-// TEST(Integer, abs_1) {
-//     try {
-//         Integer<int>  x = -98765;
-//         Integer<int>& y = x.abs();
-//         ASSERT_EQ(98765, x);
-//         ASSERT_EQ(&x,    &y);}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
+ TEST(Integer, abs_1) {
+     try {
+         Integer<int>  x = -98765;
+         Integer<int>& y = x.abs();
+         ASSERT_EQ(98765, x);
+         ASSERT_EQ(&x,    &y);}
+     catch (std::invalid_argument& e) {
+         ASSERT_TRUE(false);}}
+//
+ TEST(Integer, abs_2) {
+     try {
+         Integer<int> x = -98765;
+         Integer<int> y = abs(x);
 
-// TEST(Integer, abs_2) {
-//     try {
-//         const Integer<int> x = -98765;
-//         const Integer<int> y = abs(x);
-//         ASSERT_EQ(-98765, x);
-//         ASSERT_EQ( 98765, y);}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
+//         cout << y.container[0] << " " << y.container[1] << endl;
+         Integer<int> z = 98765;
+         ASSERT_EQ(x, x);
+         ASSERT_EQ( z, y);}
+     catch (std::invalid_argument& e) {
+         ASSERT_TRUE(false);}}
 
 // --------
 // equal_to
 // --------
 
-// TEST(Integer, equal_to) {
-//     try {
-//         const Integer<int> x = 98765;
-//         const Integer<int> y = 98765;
-//         ASSERT_EQ(      x, y);
-//         ASSERT_EQ(      x, 98765);
-//         ASSERT_EQ(  98765, x);}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
+ TEST(Integer, equal_to) {
+     try {
+         const Integer<int> x = 98765;
+         const Integer<int> y = 98765;
 
-// --------
-// negation
-// --------
+//         for(int i = 0 ; i < x.size; i++){
+//        	 cout << x.container[i]  << " " ;
+//         }
+//         if(x == y){
+//        	 cout<<"THEY ARE EQUAL" <<endl;
+//         }
+//         cout << "Size x: "<< x.size << endl;
+//         cout << "Size y: "<< y.size << endl;
+//
+//         cout << "Negative x: "<< x.negative << endl;
+//         cout << "Negative y: "<< y.negative << endl;
+         ASSERT_EQ(      x, y);
+     }
+     catch (std::invalid_argument& e) {
+         ASSERT_TRUE(false);}}
 
-// TEST(Integer, negation) {
-//     try {
-//         const Integer<int> x = 98765;
-//         const Integer<int> y = -x;
-//         ASSERT_EQ(-98765, y);}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
+
+
+ TEST(Integer, equal_to_1) {
+      try {
+          const Integer<int> x = -765;
+          const Integer<int> y = -765;
+
+ //         for(int i = 0 ; i < x.size; i++){
+ //        	 cout << x.container[i]  << " " ;
+ //         }
+ //         if(x == y){
+ //        	 cout<<"THEY ARE EQUAL" <<endl;
+ //         }
+ //         cout << "Size x: "<< x.size << endl;
+ //         cout << "Size y: "<< y.size << endl;
+ //
+ //         cout << "Negative x: "<< x.negative << endl;
+ //         cout << "Negative y: "<< y.negative << endl;
+          ASSERT_EQ(      x, y);
+      }
+      catch (std::invalid_argument& e) {
+          ASSERT_TRUE(false);}}
+
+
 
 // ------
 // output
 // ------
 
-// TEST(Integer, output) {
-//     try {
-//         const Integer<int> x = 98765;
-//         std::ostringstream out;
-//         out << x;
-//         ASSERT_EQ("98765", out.str());}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
+ TEST(Integer, output) {
+     try {
+         const Integer<int> x = 98765;
+         std::ostringstream out;
+         out << x;
+         ASSERT_EQ("98765", out.str());}
+     catch (std::invalid_argument& e) {
+         ASSERT_TRUE(false);}}
 
 // ---
 // pow

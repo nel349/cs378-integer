@@ -60,7 +60,19 @@ FI shift_left_digits (II b, II e, int n, FI x) {
  */
 template <typename II, typename FI>
 FI shift_right_digits (II b, II e, int n, FI x) {
-	x = copy(b, e-n, x);
+	int distances = distance(b,e);
+
+	cout << "distance: "<< distances << endl;
+	if(n >= distances ){
+
+		*x = 0;
+		++x;
+		return x;
+	}
+	else{
+		x = copy(b, e-n, x);
+	}
+
 
 	return x;}
 
@@ -105,12 +117,12 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 				// cout << "A" << " ";
 				temp = (*e1  + *e2 + extra);
 			}
-				
+
 			else{
 				// cout << "B" << " ";
 				temp = (*e1  + *e2 );
 			}	
-				
+
 			--x;
 			*x=temp;
 		}
@@ -121,7 +133,7 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 				// cout << "ENTERS AFTER 0"<< " ";
 				flag = false;
 			}
-			
+
 			--x;
 			*x=temp;
 
@@ -236,88 +248,88 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 template <typename II1, typename II2, typename FI>
 FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
-    int size = distance(b1, e1);
-    int size2 = distance(b2, e2);
-    int biggestSize= max(size, size2);
-    bool flag = false;
-    bool flag_prev = false;
-    int need_extra = 10;
-    advance(x, biggestSize);
-    int curr_e1 = *e1;
-    int prev_e1 = 0;
-    if( size < size2){
+	int size = distance(b1, e1);
+	int size2 = distance(b2, e2);
+	int biggestSize= max(size, size2);
+	bool flag = false;
+	bool flag_prev = false;
+	int need_extra = 10;
+	advance(x, biggestSize);
+	int curr_e1 = *e1;
+	int prev_e1 = 0;
+	if( size < size2){
 
-        swap(e1, e2);
-        swap(b1, b2);
-    }
-    while(e1 != b1 && e2 != b2){
-        --e1;
-        --e2;
+		swap(e1, e2);
+		swap(b1, b2);
+	}
+	while(e1 != b1 && e2 != b2){
+		--e1;
+		--e2;
 
-         curr_e1 = *e1;
+		curr_e1 = *e1;
 
-        if( flag_prev){
-            curr_e1 = prev_e1;
-            flag_prev = false;
-        }
+		if( flag_prev){
+			curr_e1 = prev_e1;
+			flag_prev = false;
+		}
 
-        if(*e2 > *e1 && e1 != b1  &&  *e2 > curr_e1  ){
-            --e1;
-            prev_e1 = *e1 -1 ;
-            ++e1;
-            flag = true;
-            flag_prev =true;
-        }
-       
-        int temp = 0;
+		if(*e2 > *e1 && e1 != b1  &&  *e2 > curr_e1  ){
+			--e1;
+			prev_e1 = *e1 -1 ;
+			++e1;
+			flag = true;
+			flag_prev =true;
+		}
 
-        if(flag){
-            flag = false;
-           temp = ( need_extra + curr_e1 ) - *e2;
+		int temp = 0;
 
-           --x;
-           *x= temp;
-        }
-        else{
-            temp =  curr_e1  - *e2;
+		if(flag){
+			flag = false;
+			temp = ( need_extra + curr_e1 ) - *e2;
 
-           --x;
-           *x= temp;
-        }
+			--x;
+			*x= temp;
+		}
+		else{
+			temp =  curr_e1  - *e2;
 
-    }
+			--x;
+			*x= temp;
+		}
 
-    while(e1 != b1){
-        --e1;
-        --x;
-        if(flag_prev){
-            *x = *e1 - 1;
-        }
-        else{
-            *x = *e1;
-        }
-        
-    }
+	}
 
-    while(e2 != b2){
-        --e2;
-        --x;
-        *x = -(*e2);
-    }
+	while(e1 != b1){
+		--e1;
+		--x;
+		if(flag_prev){
+			*x = *e1 - 1;
+		}
+		else{
+			*x = *e1;
+		}
 
-    advance(x, biggestSize );
+	}
+
+	while(e2 != b2){
+		--e2;
+		--x;
+		*x = -(*e2);
+	}
+
+	advance(x, biggestSize );
 
 	return x;}
 
 
 void printVector(vector< vector<int> > v){
-    for(int i =0; i < (int)v.size() ; ++i){
+	for(int i =0; i < (int)v.size() ; ++i){
 
-        for(int j =0; j < (int)v[0].size(); ++j){
-            cout << v[i][j] << " ";
-        }
-        cout << endl;
-    }
+		for(int j =0; j < (int)v[0].size(); ++j){
+			cout << v[i][j] << " ";
+		}
+		cout << endl;
+	}
 
 }
 
@@ -346,144 +358,144 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 	++e2;
 	cout << "First Value = " <<  first_value << endl;
 
-    int size = distance(b1, e1);
-    int size2 = distance(b2, e2);
+	int size = distance(b1, e1);
+	int size2 = distance(b2, e2);
 
-    if( size2 > size){
-        swap(e1, e2);
-        swap(b1, b2);
-    }
-  
-
-    int biggestSize= max(size, size2);
-    int smallestSize = min(size, size2);
-
-    vector< vector<int> > sums ={};
-
-    
-
-    int last =0;
-    II1 o_e1 = e1;
-    // II1 o_b1 = b1;
-    // II2 o_e2 = e2;
-    // II2 o_b2 = b2;
-    int temp_extra = 0;
-    // int  i = 0;
-    // int  j = 0;
-    while(e1 != b1 && e2 != b2){
-        vector<int> row = {};
-        temp_extra = 0;// --e1;
-        --e2;
-        int temp = 0;
-        last =biggestSize;
-        // j=0;
-        while(e1 != b1){
-            --e1;
-            temp = *e1 *  *e2;
-
-            // if( last != 1)                        
-            int re = (temp % 10) + temp_extra;
-            
-            if(re / 10  == 1){
-                temp_extra = (*e1 *  *e2)/ 10 + 1;
-                
-                    re = (re % 10);
-                
-            }
-            else{
-                if(last != 1)
-                    temp_extra = (*e1 *  *e2)/ 10;
-            }
-            if(last == 1){
-                re = temp + temp_extra; 
-                string s_re = to_string(re);
-                cout << "THIS IS LAST : " << s_re << endl;
-                if(s_re.size() == 2){
-                	row.push_back( (int)((char)s_re[1] - '0') );  
-                	row.push_back( (int)((char)s_re[0] - '0') );
-                }
-                else{
-                	row.push_back(re);
-                }
-                         
-            }
-            else{
-                row.push_back(re);
-            }
+	if( size2 > size){
+		swap(e1, e2);
+		swap(b1, b2);
+	}
 
 
-            cout << "*e1:" << *e1 << " e2:" << *e2 << " = " << re << " and my number is : "<< temp_extra<<endl;
+	int biggestSize= max(size, size2);
+	int smallestSize = min(size, size2);
 
-            --last;  
-        }
-        vector<int> r_row = row;
-        reverse_copy(row.begin(), row.end(), r_row.begin() );
-        sums.push_back(r_row);
-        e1 = o_e1; 
-
-        cout << endl;
-    }
-
-    int size_result;
-    int t = first_value * second_value;
-
-    if(( (size == 1 && size2 == 1)  && t < 10 ) ){
-    	size_result = 1;
-    }
-    else if(( (size == 1 && size2 == 1)  && t > 10 )){
-    	size_result = 2;
-
-    }
-    else if(smallestSize == 1){
-    	size_result = biggestSize;
-    }
-    else{
-    	size_result = (int)sums[0].size() + sums.size() - 1;
-    }
- 	int mm;
-    if(smallestSize == 1){
-    	mm = 0;
-    }
-    else if(smallestSize ==2){
-    	mm =1;
-    }
-    else{
-    	mm =2;
-    }
-    	
-
-    cout << "THIS IS THE SIZE OF OF OUR RESULT " << size_result  << endl;
+	vector< vector<int> > sums ={};
 
 
 
-    printVector(sums);
+	int last =0;
+	II1 o_e1 = e1;
+	// II1 o_b1 = b1;
+	// II2 o_e2 = e2;
+	// II2 o_b2 = b2;
+	int temp_extra = 0;
+	// int  i = 0;
+	// int  j = 0;
+	while(e1 != b1 && e2 != b2){
+		vector<int> row = {};
+		temp_extra = 0;// --e1;
+		--e2;
+		int temp = 0;
+		last =biggestSize;
+		// j=0;
+		while(e1 != b1){
+			--e1;
+			temp = *e1 *  *e2;
+
+			// if( last != 1)
+			int re = (temp % 10) + temp_extra;
+
+			if(re / 10  == 1){
+				temp_extra = (*e1 *  *e2)/ 10 + 1;
+
+				re = (re % 10);
+
+			}
+			else{
+				if(last != 1)
+					temp_extra = (*e1 *  *e2)/ 10;
+			}
+			if(last == 1){
+				re = temp + temp_extra;
+				string s_re = to_string(re);
+				cout << "THIS IS LAST : " << s_re << endl;
+				if(s_re.size() == 2){
+					row.push_back( (int)((char)s_re[1] - '0') );
+					row.push_back( (int)((char)s_re[0] - '0') );
+				}
+				else{
+					row.push_back(re);
+				}
+
+			}
+			else{
+				row.push_back(re);
+			}
 
 
-    vector< vector<int>> result = {};
-    // int m = size_result - sums.size() -1 - i;
+			cout << "*e1:" << *e1 << " e2:" << *e2 << " = " << re << " and my number is : "<< temp_extra<<endl;
 
-   
-    int m =mm;
-    for(int i =0; i < (int)sums.size() ; i++){
-    	vector<int> pad(size_result, 0);
-    	
-    	if(mm >=0){
-    		m = mm--;
-    	}	
-    	cout << "m is : " << m << endl;
-    	cout << "size_result: " << size_result << endl;
-    	for(int j = 0; j < size_result && m < size_result - i; j++){
-    		pad[m] = sums[i][j];
-    		++m;
-    	}
+			--last;
+		}
+		vector<int> r_row = row;
+		reverse_copy(row.begin(), row.end(), r_row.begin() );
+		sums.push_back(r_row);
+		e1 = o_e1;
 
-    	result.push_back(pad);
-    	
-    }	
+		cout << endl;
+	}
+
+	int size_result;
+	int t = first_value * second_value;
+
+	if(( (size == 1 && size2 == 1)  && t < 10 ) ){
+		size_result = 1;
+	}
+	else if(( (size == 1 && size2 == 1)  && t > 10 )){
+		size_result = 2;
+
+	}
+	else if(smallestSize == 1){
+		size_result = biggestSize;
+	}
+	else{
+		size_result = (int)sums[0].size() + sums.size() - 1;
+	}
+	int mm;
+	if(smallestSize == 1){
+		mm = 0;
+	}
+	else if(smallestSize ==2){
+		mm =1;
+	}
+	else{
+		mm =2;
+	}
+
+
+	cout << "THIS IS THE SIZE OF OF OUR RESULT " << size_result  << endl;
+
+
+
+	printVector(sums);
+
+
+	vector< vector<int>> result = {};
+	// int m = size_result - sums.size() -1 - i;
+
+
+	int m =mm;
+	for(int i =0; i < (int)sums.size() ; i++){
+		vector<int> pad(size_result, 0);
+
+		if(mm >=0){
+			m = mm--;
+		}
+		cout << "m is : " << m << endl;
+		cout << "size_result: " << size_result << endl;
+		for(int j = 0; j < size_result && m < size_result - i; j++){
+			pad[m] = sums[i][j];
+			++m;
+		}
+
+		result.push_back(pad);
+
+	}
 	// int xx[size_result];
-    printVector(result);
-    // vector<int> final_result(size_result, 0);
-    // int sum =0;
+	printVector(result);
+	// vector<int> final_result(size_result, 0);
+	// int sum =0;
 
 
 
@@ -491,35 +503,35 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
 
 
-    // int x_sum[size_result];
-    vector<int> temp(result[0]);
-    vector<int> temp_r(size_result, 0);
-    // x_sum= copy(result[0].begin(), result[0].end(), x_sum);
-  
-    for(int i = 0; i +1 < (int)result.size() ; ++i){
-    	// x_sum = copy(xx.begin(), xx.end(), x_sum);
+	// int x_sum[size_result];
+	vector<int> temp(result[0]);
+	vector<int> temp_r(size_result, 0);
+	// x_sum= copy(result[0].begin(), result[0].end(), x_sum);
 
-    	// plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
-    	// x_sum= copy(xx.begin(), xx.end(), x_sum);
+	for(int i = 0; i +1 < (int)result.size() ; ++i){
+		// x_sum = copy(xx.begin(), xx.end(), x_sum);
+
+		// plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
+		// x_sum= copy(xx.begin(), xx.end(), x_sum);
 		plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
-	
-    	for (int i = 0; i < (int)temp_r.size(); i++ ){
-    		cout << temp_r[i] << " "; 
-    	}
 
-    	temp = temp_r;
-    	cout << endl;
-    }
+		for (int i = 0; i < (int)temp_r.size(); i++ ){
+			cout << temp_r[i] << " ";
+		}
 
-    copy(temp.begin(), temp.end(), x);
+		temp = temp_r;
+		cout << endl;
+	}
+
+	copy(temp.begin(), temp.end(), x);
 
 
-    for (int i = 0; i < 9; i++ ){
-    		cout << x[i] << " "; 
-    	}
+	for (int i = 0; i < 9; i++ ){
+		cout << x[i] << " ";
+	}
 	advance(x, size_result);
-   
-    return x;}
+
+	return x;}
 
 
 
@@ -560,11 +572,25 @@ class Integer {
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return true if all elements / sign are equal. False otherwise
 	 */
 	friend bool operator == (const Integer& lhs, const Integer& rhs) {
-		// <your code>
-		return false;}
+		if(lhs.size != rhs.size){
+			return false;
+		}
+		if(lhs.negative != rhs.negative){
+			return false;
+		}
+
+		for(int i= 0 ; i < (int)rhs.size; ++i){
+			if(lhs.container[i] != rhs.container[i]){
+				return false;
+			}
+		}
+
+		return true;}
 
 	// -----------
 	// operator !=
@@ -699,8 +725,14 @@ class Integer {
 	 * <your documentation>
 	 */
 	friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
-		// <your code>
-		return lhs << "0";}
+		if(rhs.negative){
+			lhs << "-";
+		}
+		for(int i =0; i< rhs.container.size() ; ++i){
+			lhs << rhs.container[i];
+		}
+
+		return lhs;}
 
 	// ---
 	// abs
@@ -731,10 +763,10 @@ public:
 	// ----
 
 	// C _x; // the backing container
-	
-	 C container;
-	 bool negative= false; //If negative -->true
-	 int size;
+
+	C container;
+	bool negative= false; //If negative -->true
+	int size;
 
 
 
@@ -758,8 +790,8 @@ public:
 	Integer (int value) {
 		int t_value = value;
 		int sized = 0;
-		
-		
+
+
 
 		if(value > 0){
 			negative = false;
@@ -772,16 +804,17 @@ public:
 			negative = true;
 			t_value = value * (-1);
 			sized = to_string(t_value).size();
+//			++size;
 		}
 		sized = to_string(t_value).size();
 		int index = sized - 1;
 		vector<int> c(sized, 0);
 		while(t_value != 0){
-		
+
 			c[index] = t_value %10;
-				
+
 			t_value = t_value/10;
-			
+			++size;
 			--index;
 		}
 
@@ -790,7 +823,7 @@ public:
 	}
 
 	/**
-	 * <your documentation>
+	 * @param value String value of Integer
 	 * @throws invalid_argument if value is not a valid representation of an Integer
 	 */
 	explicit Integer (const std::string& value) {
@@ -798,9 +831,9 @@ public:
 		bool vd = true;
 
 		if( !isdigit(value[0] ) && value[0] != '-' ) {
-				cout << "NOT VALID: " << value[0]<<endl;
-				throw std::invalid_argument("Integer()");
-				vd = false;
+			cout << "NOT VALID: " << value[0]<<endl;
+			throw std::invalid_argument("Integer()");
+			vd = false;
 		}
 		for(int i = 1; i < (int)value.size(); ++i){
 
@@ -813,11 +846,12 @@ public:
 
 		// istringstream(value) >> v;
 		if(vd){
-					cout << "VAlID: "<< atoi(value.c_str()) << endl;
+			cout << "VAlID: "<< atoi(value.c_str()) << endl;
 
 			Integer<int> x(atoi(value.c_str()));
+			x.negative = true;
 		}
-		
+
 
 		if (!valid())
 			throw std::invalid_argument("Integer::Integer()");}
@@ -835,8 +869,15 @@ public:
 	 * <your documentation>
 	 */
 	Integer operator - () const {
-		// <your code>
-		return Integer(0);}
+		Integer y = *this;
+		if(negative){
+			y.negative = false;
+		}
+		else{
+			y.negative = true;
+		}
+
+		return y;}
 
 	// -----------
 	// operator ++
@@ -964,7 +1005,19 @@ public:
 	 * <your documentation>
 	 */
 	Integer& abs () {
-		// <your code>
+		Integer x = *this;
+		         for(int i=0; i < x.size; i++){
+		        	 cout << x.container[i]<< "-";
+		         }
+		         cout << endl;
+
+//		cout << "Negative? = " << x.negative<< endl;
+		if( this->negative){
+					cout << "Negative? = yes " << x.negative<< endl;
+			this->negative = false ;
+		}
+
+
 		return *this;}
 
 	// ---
