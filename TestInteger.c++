@@ -595,6 +595,43 @@ TEST(Integer, constructor_7) {
     ASSERT_EQ(x, z);
   }
 
+
+  TEST(Integer, greater_than_1) {
+
+    Integer<int> x = 43;
+
+    Integer<int> y = 34;
+
+//    const Integer<int> z = 9;
+
+
+    ASSERT_TRUE(x > y);
+  }
+
+  TEST(Integer, greater_than_2) {
+
+    Integer<int> x = 3;
+
+    Integer<int> y = 86;
+
+
+
+    ASSERT_TRUE( x <  y);
+  }
+
+
+  TEST(Integer, greater_than_3) {
+
+    Integer<int> x = 39999;
+
+    Integer<int> y = 39998;
+
+
+
+    ASSERT_TRUE( x >  y);
+  }
+
+
     // ASSERT_EQ(z, x);
 // ---
 // pow

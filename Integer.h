@@ -610,8 +610,47 @@ class Integer {
 	 * <your documentation>
 	 */
 	friend bool operator < (const Integer& lhs, const Integer& rhs) {
-		// <your code>
-		return false;}
+		if(lhs.negative == false && rhs.negative == true)
+			return true;
+		if(lhs.negative == true && rhs.negative == false)
+			return false;
+
+		typename C::const_iterator lp;
+		typename C::const_iterator rp;
+
+		if(lhs.negative == false && rhs.negative == false){
+
+			if(lhs.container.size() < rhs.container.size()){
+				return true;
+			}
+
+			if(lhs.container.size() > rhs.container.size()){
+				return false;
+			}
+
+		}
+
+		if(lhs.negative == true && rhs.negative == true){
+			if(lhs.container.size() < rhs.container.size())
+				return true;
+			if(lhs.container.size() > rhs.container.size())
+				return false;
+		}
+
+
+		lp = rhs.container.begin();
+		rp = lhs.container.begin();
+
+		while(lp != lhs.container.end()){
+			if(*lp < *rp)
+				return true;
+			++lp;
+			++rp;
+		}
+		return false;
+
+
+	}
 
 	// -----------
 	// operator <=
@@ -804,7 +843,7 @@ public:
 			negative = true;
 			t_value = value * (-1);
 			sized = to_string(t_value).size();
-//			++size;
+			//			++size;
 		}
 		sized = to_string(t_value).size();
 		int index = sized - 1;
@@ -925,37 +964,30 @@ public:
 	 * <your documentation>
 	 */
 	Integer& operator += (const Integer& rhs) {
-            
-            C result(this->container.size() + rhs.container.size());
-            typename C::iterator endPlus;
-            
-            if(this->negative == true && rhs.negative == false){
 
-            }
-                // endPlus = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
-            else if(this->negative == false && rhs.negative == true){
-                // endPlus = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
-            }else if(this->negative == false && rhs.negative == false){                
-                endPlus = plus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());;
-                negative = false;
-            }else{
-                endPlus = plus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
-            }
-            
-            // result.erase(endPlus, result.end());
+		C result(this->container.size() + rhs.container.size());
+		typename C::iterator ite;
 
+		if(this->negative == true && rhs.negative == false){
+			// ite = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
 
-            container = result;
-            // container.resize(result.size());
-            // typename C::reverse_iterator beginCont = container.rbegin();
-            // typename C::iterator beginResult = result.begin();
-            // while(beginResult != result.end()){
-            //     *beginCont = *beginResult;
-            //     ++beginResult;
-            //     ++beginCont;
-            // }
+		}
+		else if(this->negative == false && rhs.negative == false){
+			ite = plus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());;
+			negative = false;
+		}
+		else if(this->negative == false && rhs.negative == true){
+			// ite = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
+		}
+		else{
+			ite = plus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
+		}
 
-            return *this;
+		container = result;
+
+		//            this->container.resize();
+
+		return *this;
 	}
 
 	// -----------
@@ -1036,14 +1068,14 @@ public:
 	 */
 	Integer& abs () {
 		Integer x = *this;
-		         for(int i=0; i < x.size; i++){
-		        	 cout << x.container[i]<< "-";
-		         }
-		         cout << endl;
+		for(int i=0; i < x.size; i++){
+			cout << x.container[i]<< "-";
+		}
+		cout << endl;
 
-//		cout << "Negative? = " << x.negative<< endl;
+		//		cout << "Negative? = " << x.negative<< endl;
 		if( this->negative){
-					cout << "Negative? = yes " << x.negative<< endl;
+			cout << "Negative? = yes " << x.negative<< endl;
 			this->negative = false ;
 		}
 
