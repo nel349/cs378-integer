@@ -318,6 +318,7 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		*x = -(*e2);
 	}
 
+	std::vector<int> temp;
 
 
 	advance(x, biggestSize );
@@ -996,12 +997,39 @@ public:
 
          }
 
+        result.erase(endMinus, result.end());
+
+        typename C::iterator ite = result.begin();
+        int cntz = 0;
+        while(ite != result.end() ){
+        	if(*ite != 0){
+        		break;
+        	}
+        	cout << *ite << endl;
+        	cntz++;
+        	++ite;
+        }
+
+		ite = result.begin() + cntz;
+
+        typename C::iterator itend = result.end();
+
+        typename C::iterator itre = container.begin();
+
+
+
+
+
+		std::vector<int> v(ite, itend);
+        // container = copy(ite, itend, itre);
+        cout <<"Number of zeroes to remove: "<< cntz << endl;
  		cout << "MY result container" << endl;
-        for(int i  =0 ; i< (int)result.size(); i++){
-        	cout << result[i];
+        for(int i  =0 ; i< (int)v.size(); i++){
+        	cout << v[i];
         }
 		cout <<  endl;
-
+		container.clear();
+		container = v;
          // cout << endl;
 
          // container = result;

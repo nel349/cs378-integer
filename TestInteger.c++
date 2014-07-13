@@ -313,7 +313,7 @@ ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 TEST(Integer, minus_digits_7) {
 const int a[] = {1, 3, 2, 6};
 const int b[] = {1, 1, 3, 4};
-const int c[] =    {1, 9, 2};
+const int c[] = {0, 1, 9, 2};
       int x[10];
 const int* p = minus_digits(a, a + 4, b, b + 4, x);
 ASSERT_EQ(4, p - x);
@@ -635,9 +635,6 @@ TEST(Integer, constructor_7) {
 
     Integer<int> y = 34;
 
-//    const Integer<int> z = 9;
-
-
     ASSERT_TRUE(x > y);
   }
 
@@ -664,12 +661,36 @@ TEST(Integer, constructor_7) {
     ASSERT_TRUE( x >  y);
   }
 
-//
-// Greater than
-// 
+    TEST(Integer, greater_than_5) {
+      Integer<int> x  = 1326;
+
+      Integer<int> y = 1134;
+
+    ASSERT_FALSE( y > x);
+  }
 
 
-  TEST(Integer, less_than_1) {
+TEST(Integer, plus_plus) {
+      
+      Integer<int> max  = 7;
+
+      Integer<int> c = 1;
+
+      while( c != max){
+        c++;
+      }
+      for(int i = 0; i < (int)c.container.size(); ++i){
+        cout << c.container[i];
+      }
+      cout << endl;
+      ASSERT_TRUE(c == max);
+  }
+
+  // 
+  //Less than
+  //
+
+ TEST(Integer, less_than_1) {
 
     Integer<int> x = 7;
 
@@ -696,34 +717,6 @@ TEST(Integer, constructor_7) {
 
     ASSERT_FALSE( x  <  y);
   }
-
-
-    TEST(Integer, greater_than_5) {
-      Integer<int> x  = 1326;
-
-      Integer<int> y = 1134;
-
-    ASSERT_FALSE( y > x);
-  }
-
-
-TEST(Integer, plus_plus) {
-      
-      Integer<int> max  = 7;
-
-      Integer<int> c = 1;
-
-      while( c != max){
-        c++;
-      }
-      for(int i = 0; i < (int)c.container.size(); ++i){
-        cout << c.container[i];
-      }
-      cout << endl;
-      ASSERT_TRUE(c == max);
-  }
-
-
 
 
   // 
