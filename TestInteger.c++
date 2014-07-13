@@ -999,6 +999,46 @@ TEST(Integer, minus_integer_1) {
 
   
 
+    TEST(Integer, divides_integer_1) {
+      
+      Integer<int> x  = 1134;
+
+      Integer<int> y = 2;
+
+      Integer<int> actual =0;
+
+      Integer<int> expected =  567;
+
+      actual = x / y;
+
+
+      // for(int i = 0; i < (int)w.container.size(); ++i){
+      //   cout << w.container[i];
+      // }
+
+      ASSERT_TRUE(actual == expected);}
+
+
+
+
+    TEST(Integer, divides_integer_2) {
+      
+      Integer<int> x  = 896;
+
+      Integer<int> y = 56;
+
+      Integer<int> actual =0;
+
+      Integer<int> expected =  16;
+
+      actual = x / y;
+
+
+      // for(int i = 0; i < (int)w.container.size(); ++i){
+      //   cout << w.container[i];
+      // }
+
+      ASSERT_TRUE(actual == expected);}
 
 
 

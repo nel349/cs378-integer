@@ -19,6 +19,7 @@
 #include <string.h>    // vector
 using namespace std;
 
+
 bool zeroless_minus_mode = false;
 // -----------------
 // shift_left_digits
@@ -491,6 +492,155 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 template < typename T, typename C = std::vector<T> >
 class Integer {
 
+
+
+
+void status(std::vector<int> v){
+	for(int i = 0; i <(int) v.size(); i++){
+		cout << v[i] ;
+	}
+	cout << endl;
+}
+
+// --------------
+// divides_digits
+// --------------
+
+/**
+ * @param b  an iterator to the beginning of an input  sequence (inclusive)
+ * @param e  an iterator to the end       of an input  sequence (exclusive)
+ * @param b2 an iterator to the beginning of an input  sequence (inclusive)
+ * @param e2 an iterator to the end       of an input  sequence (exclusive)
+ * @param x  an iterator to the beginning of an output sequence (inclusive)
+ * @return   an iterator to the end       of an output sequence (exclusive)
+ * the sequences are of decimal digits
+ * output the division of the two input sequences into the output sequence
+ * ([b1, e1) / [b2, e2)) => x
+ */
+template <typename II1, typename II2, typename FI>
+friend FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
+	bool flaggy = false;
+	int divisor_size = distance(b2, e2);
+	int dividend_size = distance(b1, e1);
+
+	if(divisor_size > dividend_size){
+		*x = 0;
+		++x;
+		return x;
+	}
+
+	typename vector<int>::iterator itedv;
+	Integer<int> divisor = 0;
+	divisor.resize(divisor_size);
+	itedv = divisor.container.begin();
+
+
+	while(b2 != e2){
+		*itedv = *b2;
+		++b2;
+		++itedv;
+	}
+
+	cout << "THIS IS MY DIVISOR" << endl;
+	for(int i = 0; i <(int) divisor.container.size(); i++){
+		cout << divisor.container[i] ;
+	}
+	cout << endl;
+
+	typename vector<int>::iterator it_dnd;
+	Integer<int> dividend;
+	// dividend.resize(dividend_size);
+	// it_dnd = dividend.container.begin();
+
+	Integer<int> result;
+
+	while(b1 != e1){
+		dividend.add_digit(*b1);
+		++b1;
+		// ++it_dnd;
+		Integer<int> temp  = 0 ;
+		Integer<int> n  = 0 ;
+		Integer<int> difference  = 1 ;
+		Integer<int> prev_temp = 1;
+
+		// cout << "THIS IS MY n " << endl;
+		// 		status(n);
+
+		cout << "THIS IS MY DIVIDEND on A" << endl;
+		for(int i = 0; i <(int) dividend.container.size(); i++){
+			cout << dividend.container[i] ;
+		}
+		cout << endl;
+
+		if(divisor <= dividend  || dividend == 0 ){
+			int cnt = 0;
+
+			while( temp  <= dividend ) {
+				cout << "THIS IS MY n " << endl;
+				// status(n);
+				n++;
+				prev_temp = temp;
+				temp = (n * divisor);
+
+				cout << "THIS IS what I subtract: " ;
+				// status(prev_temp);
+				
+
+
+
+				cnt++;
+			}
+			flaggy =true;
+			cnt--;
+			cout << "THIS IS MY DIVIDEND: " ;
+			// status(dividend);
+			cout << endl;
+			
+			difference = dividend - prev_temp;
+			cout << "THIS IS MY DIFFERENCE: " ;
+			// status(difference);
+
+			dividend =  difference; 
+			// dividend.add_digit(*b1);
+			
+			cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
+			// status(dividend);
+
+
+			
+			cout << "THIS IS MY result" << endl;
+			result.add_digit(cnt);
+			// status(result);
+			// return x;
+		}
+		else if(flaggy){
+			result.add_digit(0);
+		}
+
+
+	}
+
+
+	x = copy(result.container.begin(), result.container.end(), x);
+
+
+
+	// cout << "THIS IS MY DIVIDEND" << endl;
+	// for(int i = 0; i <(int) dividend.container.size(); i++){
+	// 	cout << dividend.container[i] ;
+	// }
+	// cout << endl;
+
+
+
+	// cout << "THIS IS MY result" << endl;
+	// for(int i = 0; i <(int) result.container.size(); i++){
+	// 	cout << result.container[i] ;
+	// }
+	// cout << endl;
+
+	return x;
+}
 
 
 
@@ -1076,7 +1226,29 @@ public:
 	 * @throws invalid_argument if (rhs == 0)
 	 */
 	Integer& operator /= (const Integer& rhs) {
-		// <your code>
+		C my_container(container.begin(), container.end());
+		C copy_my_Container(rhs.container.begin(), rhs.container.end());
+		C result(container.size() + rhs.container.size(), 0);
+		typename C::iterator ite;
+		ite= divides_digits(my_container.begin(), my_container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
+		
+
+		 result.erase(ite, result.end());
+		 container.resize(result.size());
+
+
+
+		 typename C::iterator ite_r = result.begin();
+		 typename C::iterator ite_c = container.begin();
+
+
+		 while( ite_r != result.end()){
+		 	*ite_c = *ite_r;
+		 	++ite_r;
+		 	++ite_c;
+		 }
+
+
 		return *this;}
 
 	// -----------
@@ -1168,151 +1340,6 @@ public:
 
 
 
-void status(Integer<int> st){
-	for(int i = 0; i <(int) st.container.size(); i++){
-		cout << st.container[i] ;
-	}
-	cout << endl;
-}
-// --------------
-// divides_digits
-// --------------
-
-/**
- * @param b  an iterator to the beginning of an input  sequence (inclusive)
- * @param e  an iterator to the end       of an input  sequence (exclusive)
- * @param b2 an iterator to the beginning of an input  sequence (inclusive)
- * @param e2 an iterator to the end       of an input  sequence (exclusive)
- * @param x  an iterator to the beginning of an output sequence (inclusive)
- * @return   an iterator to the end       of an output sequence (exclusive)
- * the sequences are of decimal digits
- * output the division of the two input sequences into the output sequence
- * ([b1, e1) / [b2, e2)) => x
- */
-template <typename II1, typename II2, typename FI>
-FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-	bool flaggy = false;
-	int divisor_size = distance(b2, e2);
-	int dividend_size = distance(b1, e1);
-
-	if(divisor_size > dividend_size){
-		*x = 0;
-		++x;
-		return x;
-	}
-
-	typename vector<int>::iterator itedv;
-	Integer<int> divisor = 0;
-	divisor.resize(divisor_size);
-	itedv = divisor.container.begin();
-
-
-	while(b2 != e2){
-		*itedv = *b2;
-		++b2;
-		++itedv;
-	}
-
-	cout << "THIS IS MY DIVISOR" << endl;
-	for(int i = 0; i <(int) divisor.container.size(); i++){
-		cout << divisor.container[i] ;
-	}
-	cout << endl;
-
-	typename vector<int>::iterator it_dnd;
-	Integer<int> dividend;
-	// dividend.resize(dividend_size);
-	// it_dnd = dividend.container.begin();
-
-	Integer<int> result;
-
-	while(b1 != e1){
-		dividend.add_digit(*b1);
-		++b1;
-		// ++it_dnd;
-		Integer<int> temp  = 0 ;
-		Integer<int> n  = 0 ;
-		Integer<int> difference  = 1 ;
-		Integer<int> prev_temp = 1;
-
-		// cout << "THIS IS MY n " << endl;
-		// 		status(n);
-
-		cout << "THIS IS MY DIVIDEND on A" << endl;
-		for(int i = 0; i <(int) dividend.container.size(); i++){
-			cout << dividend.container[i] ;
-		}
-		cout << endl;
-
-		if(divisor <= dividend  || dividend == 0 ){
-			int cnt = 0;
-
-			while( temp  <= dividend ) {
-				cout << "THIS IS MY n " << endl;
-				status(n);
-				n++;
-				prev_temp = temp;
-				temp = (n * divisor);
-
-				cout << "THIS IS what I subtract: " ;
-				status(prev_temp);
-				
-
-
-
-				cnt++;
-			}
-			flaggy =true;
-			cnt--;
-			cout << "THIS IS MY DIVIDEND: " ;
-			status(dividend);
-			cout << endl;
-			
-			difference = dividend - prev_temp;
-			cout << "THIS IS MY DIFFERENCE: " ;
-			status(difference);
-
-			dividend =  difference; 
-			// dividend.add_digit(*b1);
-			
-			cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
-			status(dividend);
-
-
-			
-			cout << "THIS IS MY result" << endl;
-			result.add_digit(cnt);
-			status(result);
-			// return x;
-		}
-		else if(flaggy){
-			result.add_digit(0);
-		}
-
-
-	}
-
-
-	x = copy(result.container.begin(), result.container.end(), x);
-
-
-
-	// cout << "THIS IS MY DIVIDEND" << endl;
-	// for(int i = 0; i <(int) dividend.container.size(); i++){
-	// 	cout << dividend.container[i] ;
-	// }
-	// cout << endl;
-
-
-
-	// cout << "THIS IS MY result" << endl;
-	// for(int i = 0; i <(int) result.container.size(); i++){
-	// 	cout << result.container[i] ;
-	// }
-	// cout << endl;
-
-	return x;
-}
 
 
 
