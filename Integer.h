@@ -318,7 +318,7 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		*x = -(*e2);
 	}
 
-	std::vector<int> temp;
+	// std::vector<int> temp;
 
 
 	advance(x, biggestSize );
@@ -574,13 +574,13 @@ class Integer {
 
 		while(beg != rhs.container.end()){
 			if(*end < *beg){
-				cout << *end << "  " << *beg << endl;
+				// cout << *end << "  " << *beg << endl;
 				return true;
 			}
 			else if (*end > *beg ) {
 				return false;	
 			}
-			cout << *end << "  " << *beg << endl;	
+			// cout << *end << "  " << *beg << endl;	
 			++beg;
 			++end;
 		}
@@ -950,11 +950,11 @@ public:
          Integer lhs = *this;
 		 C copy_my_Container(rhs.container.begin(), rhs.container.end());
 
-		 cout << "MY copy container" << endl;
-        for(int i  =0 ; i< (int)copy_my_Container.size(); i++){
-        	cout << copy_my_Container[i];
-        }
-		cout <<  endl;
+		 // cout << "MY copy container" << endl;
+  //       for(int i  =0 ; i< (int)copy_my_Container.size(); i++){
+  //       	cout << copy_my_Container[i];
+  //       }
+		// cout <<  endl;
 
         C result(lhs.container.size() + rhs.container.size());
          typename C::iterator endMinus;
@@ -969,7 +969,7 @@ public:
          }
          else if(lhs.negative == true && rhs.negative == true){
 
-         cout << "C" <<endl;
+         // cout << "C" <<endl;
 
              if(rhs > lhs){
              	endMinus = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin() );
@@ -982,16 +982,16 @@ public:
          }
          else{
 
-         	cout << "D" <<endl;
+         	// cout << "D" <<endl;
              if(rhs > lhs){
-             	cout << "RHS"<< rhs<< endl;
+             	// cout << "RHS"<< rhs<< endl;
 
-             	cout << "LHS"<< lhs<< endl;
-             	cout << "E" <<endl;
+             	// cout << "LHS"<< lhs<< endl;
+             	// cout << "E" <<endl;
                  endMinus = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin());
                  negative = true;
              }else{
-             	cout << "F" <<endl;
+             	// cout << "F" <<endl;
                  endMinus = minus_digits(lhs.container.begin(), lhs.container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
              }
 
@@ -1005,7 +1005,7 @@ public:
         	if(*ite != 0){
         		break;
         	}
-        	cout << *ite << endl;
+        	// cout << *ite << endl;
         	cntz++;
         	++ite;
         }
@@ -1022,28 +1022,15 @@ public:
 
 		std::vector<int> v(ite, itend);
         // container = copy(ite, itend, itre);
-        cout <<"Number of zeroes to remove: "<< cntz << endl;
- 		cout << "MY result container" << endl;
-        for(int i  =0 ; i< (int)v.size(); i++){
-        	cout << v[i];
-        }
-		cout <<  endl;
+   //      cout <<"Number of zeroes to remove: "<< cntz << endl;
+ 		// cout << "MY result container" << endl;
+   //      for(int i  =0 ; i< (int)v.size(); i++){
+   //      	cout << v[i];
+   //      }
+		// cout <<  endl;
 		container.clear();
 		container = v;
-         // cout << endl;
-
-         // container = result;
-         // result.erase(endMinus, result.end());
-         // container.resize(result.size());
-         // typename C::iterator beginCont = container.begin();
-         // typename C::iterator beginResult = result.begin();
-         // while(beginCont != container.end()){
-         // 	cout<< *beginCont;
-         //     // *beginCont = *beginResult;
-         //     // ++beginResult;
-         //     ++beginCont;
-         // }
-         // cout << endl;
+     
 
 		zeroless_minus_mode = false;
 		return *this;}
@@ -1169,7 +1156,12 @@ public:
 	}
 
 	void add_digit(int r){
-		this->container.push_back(r);
+		if(  (int)container.size() == 1 && container[0] == 0 && r == 0){
+			cout << "ENTRO AQUI NO SE AGREGO EL 0";
+		}else{
+			this->container.push_back(r);
+
+		}
 	}
 };
 
@@ -1199,7 +1191,7 @@ void status(Integer<int> st){
  */
 template <typename II1, typename II2, typename FI>
 FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-
+	bool flaggy = false;
 	int divisor_size = distance(b2, e2);
 	int dividend_size = distance(b1, e1);
 
@@ -1238,49 +1230,54 @@ FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		dividend.add_digit(*b1);
 		++b1;
 		// ++it_dnd;
-		Integer<int> temp  = 1 ;
-		Integer<int> n  = 1 ;
+		Integer<int> temp  = 0 ;
+		Integer<int> n  = 0 ;
 		Integer<int> difference  = 1 ;
-
+		Integer<int> prev_temp = 1;
 
 		// cout << "THIS IS MY n " << endl;
 		// 		status(n);
 
-		cout << "THIS IS MY DIVIDEND" << endl;
+		cout << "THIS IS MY DIVIDEND on A" << endl;
 		for(int i = 0; i <(int) dividend.container.size(); i++){
 			cout << dividend.container[i] ;
 		}
 		cout << endl;
 
-		if(divisor <= dividend){
-			int cnt = 1;
+		if(divisor <= dividend  || dividend == 0 ){
+			int cnt = 0;
 
-			while( temp  <= dividend  && cnt < 10) {
+			while( temp  <= dividend ) {
 				cout << "THIS IS MY n " << endl;
 				status(n);
 				n++;
-				
-
-				cout << "THIS IS MY temp " ;
-				status(temp);
+				prev_temp = temp;
 				temp = (n * divisor);
+
+				cout << "THIS IS what I subtract: " ;
+				status(prev_temp);
 				
 
 
 
 				cnt++;
 			}
+			flaggy =true;
+			cnt--;
+			cout << "THIS IS MY DIVIDEND: " ;
+			status(dividend);
+			cout << endl;
 			
-			difference = dividend - temp;
-			cout << "THIS IS MY DIFFERENCE" ;
+			difference = dividend - prev_temp;
+			cout << "THIS IS MY DIFFERENCE: " ;
 			status(difference);
 
 			dividend =  difference; 
-			dividend.add_digit(*b1);
-
-			cout << "THIS IS MY DIVIDEND" ;
+			// dividend.add_digit(*b1);
+			
+			cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
 			status(dividend);
-			cout << endl;
+
 
 			
 			cout << "THIS IS MY result" << endl;
@@ -1288,10 +1285,15 @@ FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 			status(result);
 			// return x;
 		}
+		else if(flaggy){
+			result.add_digit(0);
+		}
+
 
 	}
 
 
+	x = copy(result.container.begin(), result.container.end(), x);
 
 
 

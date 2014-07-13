@@ -679,10 +679,10 @@ TEST(Integer, plus_plus) {
       while( c != max){
         c++;
       }
-      for(int i = 0; i < (int)c.container.size(); ++i){
-        cout << c.container[i];
-      }
-      cout << endl;
+      // for(int i = 0; i < (int)c.container.size(); ++i){
+      //   cout << c.container[i];
+      // }
+      // cout << endl;
       ASSERT_TRUE(c == max);
   }
 
@@ -736,9 +736,9 @@ TEST(Integer, multiplies_equal) {
       w *= x;
 
 
-      for(int i = 0; i < (int)w.container.size(); ++i){
-        cout << w.container[i];
-      }
+      // for(int i = 0; i < (int)w.container.size(); ++i){
+      //   cout << w.container[i];
+      // }
       // cout << endl;
       // ASSERT_TRUE(x == (z * 1));
 
@@ -760,9 +760,9 @@ TEST(Integer, multiplies_equal) {
       x *= y;
 
 
-      for(int i = 0; i < (int)x.container.size(); ++i){
-        cout << x.container[i];
-      }
+      // for(int i = 0; i < (int)x.container.size(); ++i){
+      //   cout << x.container[i];
+      // }
       // cout << endl;
       // ASSERT_TRUE(x == (z * 1));
 
@@ -785,11 +785,9 @@ TEST(Integer, multiplies_equal) {
       w = x * y;
 
 
-      for(int i = 0; i < (int)w.container.size(); ++i){
-        cout << w.container[i];
-      }
-      // cout << endl;
-      // ASSERT_TRUE(x == (z * 1));
+      // for(int i = 0; i < (int)w.container.size(); ++i){
+      //   cout << w.container[i];
+      // }
 
       ASSERT_TRUE(w == z);
 
@@ -800,23 +798,23 @@ TEST(Integer, multiplies_equal) {
 // 
   // Minus 
   // 
-// TEST(Integer, minus_integer_1) {
+TEST(Integer, minus_integer_1) {
       
-//       Integer<int> x  = 7;
+      Integer<int> x  = 7;
 
-//       Integer<int> y = 3;
+      Integer<int> y = 3;
 
-//       Integer<int> actual = 0;
+      Integer<int> actual = 0;
 
-//       Integer<int> expected = 4;
+      Integer<int> expected = 4;
 
-//       actual = x - y;
-//       for(int i = 0; i < (int)actual.container.size(); ++i){
-//         cout << actual.container[i];
-//       }
-//       cout << endl;
-//       ASSERT_TRUE(actual == expected);
-//   }
+      actual = x - y;
+      // for(int i = 0; i < (int)actual.container.size(); ++i){
+      //   cout << actual.container[i];
+      // }
+      // cout << endl;
+      ASSERT_TRUE(actual == expected);
+  }
 
 
   TEST(Integer, minus_integer_2) {
@@ -833,7 +831,7 @@ TEST(Integer, multiplies_equal) {
       // for(int i = 0; i < (int)actual.container.size(); ++i){
       //   cout << actual.container[i];
       // }
-      cout << endl;
+      // cout << endl;
       ASSERT_TRUE(actual == expected);
   }
 
@@ -864,15 +862,140 @@ TEST(Integer, multiplies_equal) {
 
 
 
-      // TEST(Integer, divides_digits_3) {
-      // const int a[] = {1, 3, 2, 6, 7, 8};
-      // const int b[] = {5, 6, 7};
-      // const int c[] = {2, 3, 4};
-      //       int x[10];
-      // const int* p = divides_digits(a, a + 6, b, b + 3, x);
-      // ASSERT_EQ(3, p - x);
-      // ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+      TEST(Integer, divides_digits_3) {
+      const int a[] = {1, 3, 2, 6, 7, 8};
+      const int b[] = {5, 6, 7};
+      const int c[] = {2, 3, 4};
+            int x[10];
+      const int* p = divides_digits(a, a + 6, b, b + 3, x);
+      ASSERT_EQ(3, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+
+
+      TEST(Integer, divides_digits_4) {
+      const int a[] = {5,0,0,0};
+      const int b[] = {2};
+      const int c[] = {2,5,0,0};
+            int x[4];
+      const int* p = divides_digits(a, a + 4, b, b + 1, x);
+
+      // cout << "MY final Result: ";
+      // for(int i = 0 ; i < 4; i++){
+      //   cout << x[i] << " ";
+      // }
+      // cout<< endl;
+
+      ASSERT_EQ(4, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+    TEST(Integer, divides_digits_5) {
+      const int a[] = {7, 8, 8, 8, 8};
+      const int b[] = {3, 2, 3, 2};
+      const int c[] = {2, 4};
+            int x[10];
+      const int* p = divides_digits(a, a + 5, b, b + 4, x);
+
+      // cout << "MY final Result: ";
+      // for(int i = 0 ; i < 4; i++){
+      //   cout << x[i] << " ";
+      // }
+      // cout<< endl;
+
+      ASSERT_EQ(2, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
+      TEST(Integer, divides_digits_6) {
+      const int a[] = {1, 3, 7, 9, 4, 8};
+      const int b[] = {5, 7, 4};
+      const int c[] = {2, 4, 0};
+            int x[10];
+      const int* p = divides_digits(a, a + 6, b, b + 3, x);
+
+      cout << "MY final Result: ";
+      for(int i = 0 ; i < 3; i++){
+        cout << x[i] << " ";
+      }
+      cout<< endl;
+
+      ASSERT_EQ(3, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
+
+      TEST(Integer, divides_digits_7) {
+      const int a[] = {5, 7, 4, 9, 7};
+      const int b[] = {4, 8, 6, 3};
+      const int c[] = {1, 1};
+            int x[10];
+      const int* p = divides_digits(a, a + 5, b, b + 4, x);
+
+      cout << "MY final Result: ";
+      for(int i = 0 ; i < 2; i++){
+        cout << x[i] << " ";
+      }
+      cout<< endl;
+
+      ASSERT_EQ(2, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
+      TEST(Integer, divides_digits_8) {
+      const int a[] = {2};
+      const int b[] = {1};
+      const int c[] = {2};
+            int x[10];
+      const int* p = divides_digits(a, a + 1, b, b + 1, x);
+
+      cout << "MY final Result: ";
+      for(int i = 0 ; i < 1; i++){
+        cout << x[i] << " ";
+      }
+      cout<< endl;
+
+      ASSERT_EQ(1, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
+
+      TEST(Integer, divides_digits_9) {
+      const int a[] = {1};
+      const int b[] = {1};
+      const int c[] = {1};
+            int x[10];
+      const int* p = divides_digits(a, a + 1, b, b + 1, x);
+
+      cout << "MY final Result: ";
+      for(int i = 0 ; i < 1; i++){
+        cout << x[i] << " ";
+      }
+      cout<< endl;
+
+      ASSERT_EQ(1, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+      TEST(Integer, divides_digits_10) {
+      const int a[] = {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3};
+      const int b[] = {2};
+      const int c[] = {1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6};
+            int x[20];
+      const int* p = divides_digits(a, a + 18, b, b + 1, x);
+
+      cout << "MY final Result: ";
+      for(int i = 0 ; i < 18; i++){
+        cout << x[i] << " ";
+      }
+      cout<< endl;
+
+      ASSERT_EQ(18, p - x);
+      ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
   
 
