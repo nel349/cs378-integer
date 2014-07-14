@@ -443,11 +443,41 @@ TEST(Integer, constructor_3) {
         ASSERT_TRUE(false);}}
 
 TEST(Integer, constructor_4) {
-    try {
-        const Integer<int> x("-22");}
-    catch (std::invalid_argument& e) {
-        ASSERT_TRUE(false);}}
+  
+  const Integer<int> actual("-22");
 
+
+  Integer<int> expected = -22;
+
+  cout << "expected = " << expected << "\tactual = " << actual << endl;
+  ASSERT_TRUE(expected == actual);
+
+
+
+}
+
+TEST(Integer, constructor_4_1) {
+  
+  const Integer<int> actual("33322");
+
+  Integer<int> expected = 33322;
+
+  ASSERT_TRUE(expected == actual);
+
+
+}
+
+
+TEST(Integer, constructor_4_2) {
+  
+  const Integer<int> actual("-33322");
+
+  Integer<int> expected = -33322;
+
+  ASSERT_TRUE(expected == actual);
+
+
+}
 
 TEST(Integer, constructor_5) {
     try {
@@ -841,7 +871,7 @@ TEST(Integer, multiplies_equal) {
       actual = x * y;
 
 
-     cout << actual << endl;
+     cout << "Actual: " << actual << endl;
 
       ASSERT_TRUE(actual == expected);
 
@@ -1225,30 +1255,45 @@ TEST(Integer, power_3) {
     }
 
 
-TEST(Integer, power_4) {
+// TEST(Integer, power_4) {
+//         Integer<int>       x = 2;
+//          int          e =  11;
+
+//         Integer<int> one = 1;
+//         Integer<int>&     y = x.pow(e);
+//         Integer<int> actual = y - one;
+
+//         Integer<int>  expected = 2047;
+
+//         cout << "actual: " << y << "  expected: " << expected << endl;
+//         ASSERT_TRUE(actual == expected);
+
+//     }
+
+// TEST(Integer, power_5) {
+//         Integer<int>       x = 2;
+//          int          e =  59;
+
+//         Integer<int> one = 1;
+//         Integer<int>&     y = x.pow(e);
+//         Integer<int> actual = y - one;
+
+//         Integer<int>  expected("576460752303423487");
+
+//         cout << "actual: " << y << "  expected: " << expected << endl;
+//         ASSERT_TRUE(actual == expected);
+
+//     }
+
+    TEST(Integer, power_6) {
         Integer<int>       x = 2;
-         int          e =  11;
+         int          e =  31;
 
         Integer<int> one = 1;
         Integer<int>&     y = x.pow(e);
         Integer<int> actual = y - one;
 
-        Integer<int>  expected = 2047;
-
-        cout << "actual: " << y << "  expected: " << expected << endl;
-        ASSERT_TRUE(actual == expected);
-
-    }
-
-TEST(Integer, power_5) {
-        Integer<int>       x = 2;
-         int          e =  59;
-
-        Integer<int> one = 1;
-        Integer<int>&     y = x.pow(e);
-        Integer<int> actual = y - one;
-
-        Integer<int>  expected("576460752303423487");
+        Integer<int>  expected("2147483647");
 
         cout << "actual: " << y << "  expected: " << expected << endl;
         ASSERT_TRUE(actual == expected);

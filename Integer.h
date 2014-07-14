@@ -382,6 +382,7 @@ BI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, BI x) {
 		p = t.rbegin();
 		++i;
 	}
+
 	x = copy(p, e, x);
 	return x;
 }
@@ -742,47 +743,46 @@ public:
 	 */
 	explicit Integer (const std::string& value) {
 
-		bool vd = true;
-		typename C::reverse_iterator ite = container.rbegin();
+		// bool isNegative = false;
 
 
-		if( !isdigit(value[0] ) && value[0] != '-' ) {
-			cout << "NOT VALID: " << value[0]<<endl;
-			throw std::invalid_argument("Integer()");
-			vd = false;
-		}
+		if( value[0] == '-'){
 
+			container.resize((int)value.size() - 1);
 
-		for(int i = 1; i < (int)value.size(); ++i){
-
-			if( !isdigit(value[i] ) ) {
-				cout << "NOT VALID: " << value[i]<<endl;
-				throw std::invalid_argument("Integer()");
-				vd = false;
-			}
-
-
-		}
-
-		// istringstream(value) >> v;
-		if(vd){
-			int beginning = 0;
-			if(value[0] == '-'){
-				beginning = 1;
-			}
-			int m = 0;
-			while(beginning < (int)value.size() && m < (int)container.size() ){
-
-				container[m] = 3;
-				++beginning;
-
-				m++;
+			// cout << "THIS IS NEGATIVE " << endl;
+			this->negative = true;
+			int m =0;
+			for(int i =1 ; i < (int)value.size(); ++i){
+				if( isdigit(value[i]) ){
+					// cout << value[i] << " ";
+					container[m] = value[i] - '0';
+					m++;
+				}else{
+					throw std::invalid_argument("Integer()");
+				}
 			}
 		}
+		else{
+
+			container.resize((int)value.size());
+
+			for(int i =0 ; i < (int)value.size(); ++i){
+				if( isdigit(value[i]) ){
+					// cout << value[i] << " ";
+					container[i] = value[i] - '0';
+				}else{
+					throw std::invalid_argument("Integer()");
+				}
+			}
+		}
+
+
 
 
 		if (!valid())
-			throw std::invalid_argument("Integer::Integer()");}
+			throw std::invalid_argument("Integer::Integer()");
+	}
 
 	// Default copy, destructor, and copy assignment.
 	// Integer (const Integer&);
@@ -1141,77 +1141,30 @@ FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		++itedv;
 	}
 
-	// cout << "THIS IS MY DIVISOR" << endl;
-	// for(int i = 0; i <(int) divisor.container.size(); i++){
-	// 	cout << divisor.container[i] ;
-	// }
-	// cout << endl;
-
 	typename vector<int>::iterator it_dnd;
 	Integer<int> dividend;
-	// dividend.resize(dividend_size);
-	// it_dnd = dividend.container.begin();
-
 	Integer<int> result;
 
 	while(b1 != e1){
 		dividend.add_digit(*b1);
 		++b1;
-		// ++it_dnd;
 		Integer<int> temp  = 0 ;
 		Integer<int> n  = 0 ;
 		Integer<int> difference  = 1 ;
 		Integer<int> prev_temp = 1;
-
-		// cout << "THIS IS MY n " << endl;
-		// 		status(n);
-
-		// cout << "THIS IS MY DIVIDEND on A" << endl;
-		// for(int i = 0; i <(int) dividend.container.size(); i++){
-		// 	cout << dividend.container[i] ;
-		// }
-		// cout << endl;
-
 		if(divisor <= dividend  || dividend == 0 ){
 			int cnt = 0;
-
 			while( temp  <= dividend ) {
-				// cout << "THIS IS MY n " << endl;
-				// status(n);
 				n++;
 				prev_temp = temp;
 				temp = (n * divisor);
-
-				// cout << "THIS IS what I subtract: " ;
-				// status(prev_temp);
-
-
-
-
 				cnt++;
 			}
 			flaggy =true;
 			cnt--;
-			// cout << "THIS IS MY DIVIDEND: " ;
-			// status(dividend);
-			// cout << endl;
-
 			difference = dividend - prev_temp;
-			// cout << "THIS IS MY DIFFERENCE: " ;
-			// status(difference);
-
 			dividend =  difference;
-			// dividend.add_digit(*b1);
-
-			// cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
-			// status(dividend);
-
-
-
-			// cout << "THIS IS MY result" << endl;
 			result.add_digit(cnt);
-			// status(result);
-			// return x;
 		}
 		else if(flaggy){
 			result.add_digit(0);
@@ -1220,24 +1173,8 @@ FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
 	}
 
-
 	x = copy(result.container.begin(), result.container.end(), x);
 
-
-
-	// cout << "THIS IS MY DIVIDEND" << endl;
-	// for(int i = 0; i <(int) dividend.container.size(); i++){
-	// 	cout << dividend.container[i] ;
-	// }
-	// cout << endl;
-
-
-
-	// cout << "THIS IS MY result" << endl;
-	// for(int i = 0; i <(int) result.container.size(); i++){
-	// 	cout << result.container[i] ;
-	// }
-	// cout << endl;
 
 	return x;
 }
