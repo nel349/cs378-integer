@@ -353,7 +353,7 @@ TEST(Integer, multiplies_digits_1) {
     const int c[] = {0};
           int x[10];
     const int* p = multiplies_digits(a, a + 1, b, b + 1, x);
-//    cout << x[0] << x[1] << x[2]  << endl;
+   cout << x[0] << x[1] << x[2]  << endl;
     ASSERT_EQ(1, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
@@ -795,6 +795,29 @@ TEST(Integer, multiplies_equal) {
   }
 
 
+      TEST(Integer, multiplies_integer_2) {
+      
+      Integer<int> x  = 15;
+
+      Integer<int> y = 5346;
+
+      Integer<int> actual =0;
+
+      Integer<int> expected =  80190;
+
+      actual = x * y;
+
+
+      for(int i = 0; i < (int)actual.container.size(); ++i){
+        cout << actual.container[i];
+      }
+
+      ASSERT_TRUE(actual == expected);
+
+
+  }
+
+
 // 
   // Minus 
   // 
@@ -1012,6 +1035,11 @@ TEST(Integer, minus_integer_1) {
       actual = x / y;
 
 
+
+
+
+
+
       // for(int i = 0; i < (int)w.container.size(); ++i){
       //   cout << w.container[i];
       // }
@@ -1042,6 +1070,47 @@ TEST(Integer, minus_integer_1) {
 
 
 
+    TEST(Integer, modulus_1) {
+      
+      Integer<int> x  = 896;
+
+      Integer<int> y = 56;
+
+      Integer<int> expected = 0;
+
+      Integer<int> actual = x % y;
+
+
+
+      // for(int i = 0; i < (int)w.container.size(); ++i){
+      //   cout << w.container[i];
+      // }
+
+      ASSERT_TRUE(actual == expected);}
+
+
+
+
+    TEST(Integer, modulus_2) {
+      
+      Integer<int> x  = 83436;
+
+      Integer<int> y = 5346;
+
+      Integer<int> expected = 3246;
+
+      Integer<int> actual = x % y;
+
+
+      cout << "THIS THE FINAL RESULT: ";
+      for(int i = 0; i < (int)actual.container.size(); ++i){
+        cout << actual.container[i];
+      }
+      cout << endl;
+
+      ASSERT_TRUE(actual == expected);}
+
+
  
 
 
@@ -1063,24 +1132,39 @@ TEST(Integer, minus_integer_1) {
 // pow
 // ---
 
-// TEST(Integer, pow_1) {
+// TEST(Integer, power_1) {
 //     try {
-//         Integer<int>       x = 98765;
-//         const int          e =  9867;
-//         Integer<int>&      y = x.pow(e);
-//         ASSERT_EQ(9867,  e);
-//         ASSERT_EQ(   0,  x);
-//         ASSERT_EQ(  &x, &y);}
+//         Integer<int>       x = 2;
+//         const int          e =  3;
+//         Integer<int>&     y = x.pow(e);
+
+//         // cout <<"2 to the 3 = "<< y<< endl;
+//         // cout << "2 to the 3 =" << y[0] << endl
+//         // ASSERT_EQ(9867,  e);
+//         // ASSERT_EQ(   0,  x);
+//         ASSERT_EQ(  &x, &y);
+//       }
 //     catch (std::invalid_argument& e) {
 //         ASSERT_TRUE(false);}}
 
-// TEST(Integer, pow_2) {
-//     try {
-//         const Integer<int> x = 98765;
-//         const int          e =  9867;
-//         const Integer<int> y = pow(x, e);
-//         ASSERT_EQ(98765, x);
-//         ASSERT_EQ( 9867, e);
-//         ASSERT_EQ(    0, y);}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
+TEST(Integer, pow_1) {
+    try {
+        Integer<int>       x = 98765;
+        const int          e =  9867;
+        Integer<int>&      y = x.pow(e);
+        ASSERT_EQ(9867,  e);
+        ASSERT_EQ(   1,  x);
+        ASSERT_EQ(  &x, &y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, pow_2) {
+    try {
+        const Integer<int> x = 98765;
+        const int          e =  9867;
+        const Integer<int> y = pow(x, e);
+        ASSERT_EQ(98765, x);
+        ASSERT_EQ( 9867, e);
+        ASSERT_EQ(    1, y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}

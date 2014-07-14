@@ -330,13 +330,16 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 void printVector(vector< vector<int> > v){
 	for(int i =0; i < (int)v.size() ; ++i){
 
-		for(int j =0; j < (int)v[0].size(); ++j){
+		for(int j =0; j < (int)v[i].size(); ++j){
 			cout << v[i][j] << " ";
 		}
 		cout << endl;
 	}
 
 }
+
+
+
 
 // -----------------
 // multiplies_digits
@@ -355,131 +358,56 @@ void printVector(vector< vector<int> > v){
  */
 template <typename II1, typename II2, typename FI>
 FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-	--e1;
-	int first_value = *e1;
-	++e1;
+	vector< vector<int> > c(10);
+
+
+	for(int i=0; i<10; ++i){
+
+		II1 ew1 = e1;
+		int extra = 0;
+		int temp_t;
+		vector<int> result;
+		if(i == 0){
+			result.push_back(0);
+		}
+		II1 bw1 = b1;
+		while(bw1 != ew1){
+			--ew1;
+			temp_t = (*(ew1) * i) + extra;
+			extra = 0;
+			if(temp_t < 10){
+				result.push_back(temp_t);
+			}
+			else{
+				result.push_back(temp_t%10);
+				extra = temp_t / 10;
+			}
+		}
+		if(extra != 0){
+			result.push_back(extra);
+		}
+		c[i] = result;
+	}
 	--e2;
-	int second_value = *e2;
+	vector<int>::reverse_iterator p = c[*e2].rbegin();
+	vector<int>::reverse_iterator e = c[*e2].rend();
 	++e2;
-	//	cout << "First Value = " <<  first_value << endl;
-
-	int size = distance(b1, e1);
-	int size2 = distance(b2, e2);
-
-	if( size2 > size){
-		swap(e1, e2);
-		swap(b1, b2);
-	}
-
-
-	int biggestSize= max(size, size2);
-	int smallestSize = min(size, size2);
-
-	vector< vector<int> > sums ={};
-	int last =0;
-	II1 o_e1 = e1;
-	int temp_extra = 0;
-	while(e1 != b1 && e2 != b2){
-		vector<int> row = {};
-		temp_extra = 0;// --e1;
+	int size = distance(b2,e2);
+	int size1 = distance(b1, e1);
+	int t_size = size1 + size + 1;
+	vector<int> t(t_size);
+	int i=1;
+	while( i<size){
 		--e2;
-		int temp = 0;
-		last =biggestSize;
-		// j=0;
-		while(e1 != b1){
-			--e1;
-			temp = *e1 *  *e2;
-
-			int re = (temp % 10) + temp_extra;
-
-			if(re / 10  == 1){
-				temp_extra = (*e1 *  *e2)/ 10 + 1;
-
-				re = (re % 10);
-
-			}
-			else{
-				if(last != 1)
-					temp_extra = (*e1 *  *e2)/ 10;
-			}
-			if(last == 1){
-				re = temp + temp_extra;
-				string s_re = to_string(re);
-				if(s_re.size() == 2){
-					row.push_back( (int)((char)s_re[1] - '0') );
-					row.push_back( (int)((char)s_re[0] - '0') );
-				}
-				else{
-					row.push_back(re);
-				}
-
-			}
-			else{
-				row.push_back(re);
-			}
-			--last;
-		}
-		vector<int> r_row = row;
-		reverse_copy(row.begin(), row.end(), r_row.begin() );
-		sums.push_back(r_row);
-		e1 = o_e1;
-
+		vector<int> temp((e1-b1)+1+i);
+		vector<int>::iterator shifted_left = shift_left_digits (c[*(e2-1)].rbegin(), c[*(e2-1)].rend(), i, temp.begin());
+		e = plus_digits(p, e, temp.begin(), shifted_left, t.rbegin());
+		p = t.rbegin();
+		++i;
 	}
-
-	int size_result;
-	int t = first_value * second_value;
-
-	if(( (size == 1 && size2 == 1)  && t < 10 ) ){
-		size_result = 1;
-	}
-	else if(( (size == 1 && size2 == 1)  && t > 10 )){
-		size_result = 2;
-
-	}
-	else if(smallestSize == 1){
-		size_result = sums[0].size();
-	}
-	else{
-		size_result = (int)sums[0].size() + sums.size() - 1;
-	}
-	int mm;
-	if(smallestSize == 1){
-		mm = 0;
-	}
-	else if(smallestSize ==2){
-		mm =1;
-	}
-	else{
-		mm =2;
-	}
-
-	// printVector(sums);
-	vector< vector<int>> result = {};
-	int m =mm;
-	for(int i =0; i < (int)sums.size() ; i++){
-		vector<int> pad(size_result, 0);
-
-		if(mm >=0){
-			m = mm--;
-		}
-		for(int j = 0; j < size_result && m < size_result - i; j++){
-			pad[m] = sums[i][j];
-			++m;
-		}
-		result.push_back(pad);
-	}
-
-	vector<int> temp(result[0]);
-	vector<int> temp_r(size_result, 0);
-
-	for(int i = 0; i +1 < (int)result.size() ; ++i){
-		plus_digits(temp.begin(), temp.end(), result[i+1].begin(), result[i+1].end(), temp_r.begin());
-		temp = temp_r;
-	}
-	copy(temp.begin(), temp.end(), x);
-	advance(x, size_result);
-
-	return x;}
+	x = copy(p, e, x);
+	return x;
+}
 
 
 
@@ -495,152 +423,152 @@ class Integer {
 
 
 
-void status(std::vector<int> v){
-	for(int i = 0; i <(int) v.size(); i++){
-		cout << v[i] ;
-	}
-	cout << endl;
-}
-
-// --------------
-// divides_digits
-// --------------
-
-/**
- * @param b  an iterator to the beginning of an input  sequence (inclusive)
- * @param e  an iterator to the end       of an input  sequence (exclusive)
- * @param b2 an iterator to the beginning of an input  sequence (inclusive)
- * @param e2 an iterator to the end       of an input  sequence (exclusive)
- * @param x  an iterator to the beginning of an output sequence (inclusive)
- * @return   an iterator to the end       of an output sequence (exclusive)
- * the sequences are of decimal digits
- * output the division of the two input sequences into the output sequence
- * ([b1, e1) / [b2, e2)) => x
- */
-template <typename II1, typename II2, typename FI>
-friend FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-	bool flaggy = false;
-	int divisor_size = distance(b2, e2);
-	int dividend_size = distance(b1, e1);
-
-	if(divisor_size > dividend_size){
-		*x = 0;
-		++x;
-		return x;
-	}
-
-	typename vector<int>::iterator itedv;
-	Integer<int> divisor = 0;
-	divisor.resize(divisor_size);
-	itedv = divisor.container.begin();
-
-
-	while(b2 != e2){
-		*itedv = *b2;
-		++b2;
-		++itedv;
-	}
-
-	cout << "THIS IS MY DIVISOR" << endl;
-	for(int i = 0; i <(int) divisor.container.size(); i++){
-		cout << divisor.container[i] ;
-	}
-	cout << endl;
-
-	typename vector<int>::iterator it_dnd;
-	Integer<int> dividend;
-	// dividend.resize(dividend_size);
-	// it_dnd = dividend.container.begin();
-
-	Integer<int> result;
-
-	while(b1 != e1){
-		dividend.add_digit(*b1);
-		++b1;
-		// ++it_dnd;
-		Integer<int> temp  = 0 ;
-		Integer<int> n  = 0 ;
-		Integer<int> difference  = 1 ;
-		Integer<int> prev_temp = 1;
-
-		// cout << "THIS IS MY n " << endl;
-		// 		status(n);
-
-		cout << "THIS IS MY DIVIDEND on A" << endl;
-		for(int i = 0; i <(int) dividend.container.size(); i++){
-			cout << dividend.container[i] ;
+	void status(std::vector<int> v){
+		for(int i = 0; i <(int) v.size(); i++){
+			cout << v[i] ;
 		}
 		cout << endl;
-
-		if(divisor <= dividend  || dividend == 0 ){
-			int cnt = 0;
-
-			while( temp  <= dividend ) {
-				cout << "THIS IS MY n " << endl;
-				// status(n);
-				n++;
-				prev_temp = temp;
-				temp = (n * divisor);
-
-				cout << "THIS IS what I subtract: " ;
-				// status(prev_temp);
-				
-
-
-
-				cnt++;
-			}
-			flaggy =true;
-			cnt--;
-			cout << "THIS IS MY DIVIDEND: " ;
-			// status(dividend);
-			cout << endl;
-			
-			difference = dividend - prev_temp;
-			cout << "THIS IS MY DIFFERENCE: " ;
-			// status(difference);
-
-			dividend =  difference; 
-			// dividend.add_digit(*b1);
-			
-			cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
-			// status(dividend);
-
-
-			
-			cout << "THIS IS MY result" << endl;
-			result.add_digit(cnt);
-			// status(result);
-			// return x;
-		}
-		else if(flaggy){
-			result.add_digit(0);
-		}
-
-
 	}
 
+	// --------------
+	// divides_digits
+	// --------------
 
-	x = copy(result.container.begin(), result.container.end(), x);
+	/**
+	 * @param b  an iterator to the beginning of an input  sequence (inclusive)
+	 * @param e  an iterator to the end       of an input  sequence (exclusive)
+	 * @param b2 an iterator to the beginning of an input  sequence (inclusive)
+	 * @param e2 an iterator to the end       of an input  sequence (exclusive)
+	 * @param x  an iterator to the beginning of an output sequence (inclusive)
+	 * @return   an iterator to the end       of an output sequence (exclusive)
+	 * the sequences are of decimal digits
+	 * output the division of the two input sequences into the output sequence
+	 * ([b1, e1) / [b2, e2)) => x
+	 */
+	template <typename II1, typename II2, typename FI>
+	friend FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
+		bool flaggy = false;
+		int divisor_size = distance(b2, e2);
+		int dividend_size = distance(b1, e1);
+
+		if(divisor_size > dividend_size){
+			*x = 0;
+			++x;
+			return x;
+		}
+
+		typename vector<int>::iterator itedv;
+		Integer<int> divisor = 0;
+		divisor.resize(divisor_size);
+		itedv = divisor.container.begin();
+
+
+		while(b2 != e2){
+			*itedv = *b2;
+			++b2;
+			++itedv;
+		}
+
+		// cout << "THIS IS MY DIVISOR" << endl;
+		// for(int i = 0; i <(int) divisor.container.size(); i++){
+		// 	cout << divisor.container[i] ;
+		// }
+		// cout << endl;
+
+		typename vector<int>::iterator it_dnd;
+		Integer<int> dividend;
+		// dividend.resize(dividend_size);
+		// it_dnd = dividend.container.begin();
+
+		Integer<int> result;
+
+		while(b1 != e1){
+			dividend.add_digit(*b1);
+			++b1;
+			// ++it_dnd;
+			Integer<int> temp  = 0 ;
+			Integer<int> n  = 0 ;
+			Integer<int> difference  = 1 ;
+			Integer<int> prev_temp = 1;
+
+			// cout << "THIS IS MY n " << endl;
+			// 		status(n);
+
+			// cout << "THIS IS MY DIVIDEND on A" << endl;
+			// for(int i = 0; i <(int) dividend.container.size(); i++){
+			// 	cout << dividend.container[i] ;
+			// }
+			// cout << endl;
+
+			if(divisor <= dividend  || dividend == 0 ){
+				int cnt = 0;
+
+				while( temp  <= dividend ) {
+					// cout << "THIS IS MY n " << endl;
+					// status(n);
+					n++;
+					prev_temp = temp;
+					temp = (n * divisor);
+
+					// cout << "THIS IS what I subtract: " ;
+					// status(prev_temp);
 
 
 
-	// cout << "THIS IS MY DIVIDEND" << endl;
-	// for(int i = 0; i <(int) dividend.container.size(); i++){
-	// 	cout << dividend.container[i] ;
-	// }
-	// cout << endl;
+
+					cnt++;
+				}
+				flaggy =true;
+				cnt--;
+				// cout << "THIS IS MY DIVIDEND: " ;
+				// status(dividend);
+				// cout << endl;
+
+				difference = dividend - prev_temp;
+				// cout << "THIS IS MY DIFFERENCE: " ;
+				// status(difference);
+
+				dividend =  difference;
+				// dividend.add_digit(*b1);
+
+				// cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
+				// status(dividend);
 
 
 
-	// cout << "THIS IS MY result" << endl;
-	// for(int i = 0; i <(int) result.container.size(); i++){
-	// 	cout << result.container[i] ;
-	// }
-	// cout << endl;
+				// cout << "THIS IS MY result" << endl;
+				result.add_digit(cnt);
+				// status(result);
+				// return x;
+			}
+			else if(flaggy){
+				result.add_digit(0);
+			}
 
-	return x;
-}
+
+		}
+
+
+		x = copy(result.container.begin(), result.container.end(), x);
+
+
+
+		// cout << "THIS IS MY DIVIDEND" << endl;
+		// for(int i = 0; i <(int) dividend.container.size(); i++){
+		// 	cout << dividend.container[i] ;
+		// }
+		// cout << endl;
+
+
+
+		// cout << "THIS IS MY result" << endl;
+		// for(int i = 0; i <(int) result.container.size(); i++){
+		// 	cout << result.container[i] ;
+		// }
+		// cout << endl;
+
+		return x;
+	}
 
 
 
@@ -1092,95 +1020,95 @@ public:
 	 */
 	Integer& operator -= (const Integer& rhs) {
 		zeroless_minus_mode = true;
-        if(*this == rhs){
-             container.clear();
-             container.push_back(0);
-             return *this;
-         }
-         Integer lhs = *this;
-		 C copy_my_Container(rhs.container.begin(), rhs.container.end());
+		if(*this == rhs){
+			container.clear();
+			container.push_back(0);
+			return *this;
+		}
+		Integer lhs = *this;
+		C copy_my_Container(rhs.container.begin(), rhs.container.end());
 
-		 // cout << "MY copy container" << endl;
-  //       for(int i  =0 ; i< (int)copy_my_Container.size(); i++){
-  //       	cout << copy_my_Container[i];
-  //       }
+		// cout << "MY copy container" << endl;
+		//       for(int i  =0 ; i< (int)copy_my_Container.size(); i++){
+		//       	cout << copy_my_Container[i];
+		//       }
 		// cout <<  endl;
 
-        C result(lhs.container.size() + rhs.container.size());
-         typename C::iterator endMinus;
+		C result(lhs.container.size() + rhs.container.size());
+		typename C::iterator ite_e;
 
-         if(lhs.negative == false && rhs.negative == true)
-             endMinus = plus_digits(lhs.container.begin(), lhs.container.end(), rhs.container.begin(), rhs.container.end(), result.begin());
-         else if(lhs.negative == true && rhs.negative == false){
+		if(lhs.negative == false && rhs.negative == true)
+			ite_e = plus_digits(lhs.container.begin(), lhs.container.end(), rhs.container.begin(), rhs.container.end(), result.begin());
+		else if(lhs.negative == true && rhs.negative == false){
 
 
-             endMinus = plus_digits(lhs.container.begin(), lhs.container.end(), rhs.container.begin(), rhs.container.end(), result.begin());
+			ite_e = plus_digits(lhs.container.begin(), lhs.container.end(), rhs.container.begin(), rhs.container.end(), result.begin());
 
-         }
-         else if(lhs.negative == true && rhs.negative == true){
+		}
+		else if(lhs.negative == true && rhs.negative == true){
 
-         // cout << "C" <<endl;
+			// cout << "C" <<endl;
 
-             if(rhs > lhs){
-             	endMinus = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin() );
-                 negative = false;
-             }
-             else{
-                endMinus = minus_digits(lhs.container.begin(), lhs.container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());;
+			if(rhs > lhs){
+				ite_e = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin() );
+				negative = false;
+			}
+			else{
+				ite_e = minus_digits(lhs.container.begin(), lhs.container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());;
 
-             }
-         }
-         else{
+			}
+		}
+		else{
 
-         	// cout << "D" <<endl;
-             if(rhs > lhs){
-             	// cout << "RHS"<< rhs<< endl;
+			// cout << "D" <<endl;
+			if(rhs > lhs){
+				// cout << "RHS"<< rhs<< endl;
 
-             	// cout << "LHS"<< lhs<< endl;
-             	// cout << "E" <<endl;
-                 endMinus = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin());
-                 negative = true;
-             }else{
-             	// cout << "F" <<endl;
-                 endMinus = minus_digits(lhs.container.begin(), lhs.container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
-             }
+				// cout << "LHS"<< lhs<< endl;
+				// cout << "E" <<endl;
+				ite_e = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin());
+				negative = true;
+			}else{
+				// cout << "F" <<endl;
+				ite_e = minus_digits(lhs.container.begin(), lhs.container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
+			}
 
-         }
+		}
 
-        result.erase(endMinus, result.end());
+		result.erase(ite_e, result.end());
 
-        typename C::iterator ite = result.begin();
-        int cntz = 0;
-        while(ite != result.end() ){
-        	if(*ite != 0){
-        		break;
-        	}
-        	// cout << *ite << endl;
-        	cntz++;
-        	++ite;
-        }
+		typename C::iterator ite = result.begin();
+		int cntz = 0;
+		while(ite != result.end() ){
+			if(*ite != 0){
+				break;
+			}
+			// cout << *ite << endl;
+			cntz++;
+			++ite;
+		}
 
 		ite = result.begin() + cntz;
 
-        typename C::iterator itend = result.end();
+		typename C::iterator itend = result.end();
 
-        typename C::iterator itre = container.begin();
+		typename C::iterator itre = container.begin();
 
 
 
 
 
 		std::vector<int> v(ite, itend);
-        // container = copy(ite, itend, itre);
-   //      cout <<"Number of zeroes to remove: "<< cntz << endl;
- 		// cout << "MY result container" << endl;
-   //      for(int i  =0 ; i< (int)v.size(); i++){
-   //      	cout << v[i];
-   //      }
+		// container = copy(ite, itend, itre);
+		//      cout <<"Number of zeroes to remove: "<< cntz << endl;
+		// cout << "MY result container" << endl;
+		//      for(int i  =0 ; i< (int)v.size(); i++){
+		//      	cout << v[i];
+		//      }
 		// cout <<  endl;
 		container.clear();
 		container = v;
-     
+
 
 		zeroless_minus_mode = false;
 		return *this;}
@@ -1198,22 +1126,22 @@ public:
 		C result(container.size() + rhs.container.size(), 0);
 		typename C::iterator ite;
 		ite= multiplies_digits(my_container.begin(), my_container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
-		
-
-		 result.erase(ite, result.end());
-		 container.resize(result.size());
 
 
+		result.erase(ite, result.end());
+		container.resize(result.size());
 
-		 typename C::iterator ite_r = result.begin();
-		 typename C::iterator ite_c = container.begin();
 
 
-		 while( ite_r != result.end()){
-		 	*ite_c = *ite_r;
-		 	++ite_r;
-		 	++ite_c;
-		 }
+		typename C::iterator ite_r = result.begin();
+		typename C::iterator ite_c = container.begin();
+
+
+		while( ite_r != result.end()){
+			*ite_c = *ite_r;
+			++ite_r;
+			++ite_c;
+		}
 
 		return *this;}
 
@@ -1231,22 +1159,22 @@ public:
 		C result(container.size() + rhs.container.size(), 0);
 		typename C::iterator ite;
 		ite= divides_digits(my_container.begin(), my_container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
-		
-
-		 result.erase(ite, result.end());
-		 container.resize(result.size());
 
 
+		result.erase(ite, result.end());
+		container.resize(result.size());
 
-		 typename C::iterator ite_r = result.begin();
-		 typename C::iterator ite_c = container.begin();
 
 
-		 while( ite_r != result.end()){
-		 	*ite_c = *ite_r;
-		 	++ite_r;
-		 	++ite_c;
-		 }
+		typename C::iterator ite_r = result.begin();
+		typename C::iterator ite_c = container.begin();
+
+
+		while( ite_r != result.end()){
+			*ite_c = *ite_r;
+			++ite_r;
+			++ite_c;
+		}
 
 
 		return *this;}
@@ -1260,7 +1188,12 @@ public:
 	 * @throws invalid_argument if (rhs <= 0)
 	 */
 	Integer& operator %= (const Integer& rhs) {
-		// <your code>
+		Integer x = *this / rhs;
+
+		Integer y = *this - (x * rhs);
+
+		container = y.container;
+
 		return *this;}
 
 	// ------------
@@ -1271,7 +1204,9 @@ public:
 	 * <your documentation>
 	 */
 	Integer& operator <<= (int n) {
-		// <your code>
+		container.resize(*this.container.size() + n);
+		typename C::reverse_iterator ite = shift_left_digits(*this.container.rbegin(), *this.container.rend(), n, container.rbegin());
+
 		return *this;}
 
 	// ------------
@@ -1282,7 +1217,8 @@ public:
 	 * <your documentation>
 	 */
 	Integer& operator >>= (int n) {
-		// <your code>
+		container.resize(*this.container.size() - n);
+		typename C::reverse_iterator ite = shift_right_digits(*this.container.rbegin(), *this.container.rend(), n, container.rbegin());
 		return *this;}
 
 	// ---
@@ -1295,14 +1231,14 @@ public:
 	 */
 	Integer& abs () {
 		Integer x = *this;
-		for(int i=0; i < x.size; i++){
-			cout << x.container[i]<< "-";
-		}
-		cout << endl;
+		//		for(int i=0; i < x.size; i++){
+		//			cout << x.container[i]<< "-";
+		//		}
+		//		cout << endl;
 
 		//		cout << "Negative? = " << x.negative<< endl;
 		if( this->negative){
-			cout << "Negative? = yes " << x.negative<< endl;
+			//			cout << "Negative? = yes " << x.negative<< endl;
 			this->negative = false ;
 		}
 
@@ -1319,7 +1255,46 @@ public:
 	 * @throws invalid_argument if ((this == 0) && (e == 0)) or (e < 0)
 	 */
 	Integer& pow (int e) {
-		// <your code>
+
+		// Integer n = *this;
+			// if(this == 0 && (e == 0) )
+			// 	throw std::invalid_argument("Integer::pow(int)");
+
+			// if(e < 0)
+			// 	throw std::invalid_argument("Integer::pow(int)");
+
+			// Integer result = 1;
+
+			// if(e > 1)
+			// 	result = n.pow(e/2); 
+
+			// if(!(e & 1) )		// even
+			// 	result *= result;
+			// else{		// odd
+			// 	result *= result;
+			// 	result *= *this;
+			// }
+
+			// *this = result;
+		Integer n = *this;
+
+		if (e == 0){
+			Integer one = 1;
+			*this = one;
+			return *this;
+		}
+		// Integer d = ee / 2;
+		Integer p = n.pow(e / 2);
+		
+
+		Integer q = p * p;
+		if (e & 1){
+			Integer w = q * n;
+			*this = w;
+			return *this;
+		}
+
+		*this = q;
 		return *this;}
 
 
