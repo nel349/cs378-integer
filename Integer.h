@@ -37,10 +37,6 @@ bool zeroless_minus_mode = false;
 template <typename II, typename FI>
 FI shift_left_digits (II b, II e, int n, FI x) {
 	x = copy(b, e, x);
-	//    FI y = x;
-	//    advance(y, n);
-
-
 	fill(x, x+n, 0);
 	advance(x,n);
 
@@ -63,10 +59,8 @@ FI shift_left_digits (II b, II e, int n, FI x) {
 template <typename II, typename FI>
 FI shift_right_digits (II b, II e, int n, FI x) {
 	int distances = distance(b,e);
-
 	cout << "distance: "<< distances << endl;
 	if(n >= distances ){
-
 		*x = 0;
 		++x;
 		return x;
@@ -93,14 +87,14 @@ FI shift_right_digits (II b, II e, int n, FI x) {
  * output the sum of the two input sequences into the output sequence
  * ([b1, e1) + [b2, e2)) => x
  */
-template <typename II1, typename II2, typename FI>
-FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
+template <typename II1, typename II2, typename BI>
+BI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, BI x) {
 
 	int size = distance(b1, e1);
 	int size2 = distance(b2, e2);
 
 	int biggestSize= max(size, size2);
-	FI y(x);
+	BI y(x);
 	bool flag = false;
 
 
@@ -116,12 +110,10 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		if(last == 1){
 			int temp;
 			if(flag){
-				// cout << "A" << " ";
 				temp = (*e1  + *e2 + extra);
 			}
 
 			else{
-				// cout << "B" << " ";
 				temp = (*e1  + *e2 );
 			}	
 
@@ -129,10 +121,8 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 			*x=temp;
 		}
 		else if(flag){
-			// cout << "C" << " ";
 			int temp = (*e1  + *e2 + extra) % 10;
 			if(!(*e1  + *e2 + extra >= 10) ){
-				// cout << "ENTERS AFTER 0"<< " ";
 				flag = false;
 			}
 
@@ -142,7 +132,6 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		}
 		else{
 			int temp = (*e1  + *e2) % 10;
-			// cout << "D" << " ";
 			--x;
 			*x=temp;
 
@@ -247,8 +236,8 @@ FI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
  * output the difference of the two input sequences into the output sequence
  * ([b1, e1) - [b2, e2)) => x
  */
-template <typename II1, typename II2, typename FI>
-FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
+template <typename II1, typename II2, typename BI>
+BI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, BI x) {
 
 	int size = distance(b1, e1);
 	int size2 = distance(b2, e2);
@@ -319,24 +308,12 @@ FI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		*x = -(*e2);
 	}
 
-	// std::vector<int> temp;
-
 
 	advance(x, biggestSize );
 
 	return x;}
 
 
-void printVector(vector< vector<int> > v){
-	for(int i =0; i < (int)v.size() ; ++i){
-
-		for(int j =0; j < (int)v[i].size(); ++j){
-			cout << v[i][j] << " ";
-		}
-		cout << endl;
-	}
-
-}
 
 
 
@@ -356,10 +333,9 @@ void printVector(vector< vector<int> > v){
  * output the product of the two input sequences into the output sequence
  * ([b1, e1) * [b2, e2)) => x
  */
-template <typename II1, typename II2, typename FI>
-FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
+template <typename II1, typename II2, typename BI>
+BI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, BI x) {
 	vector< vector<int> > c(10);
-
 
 	for(int i=0; i<10; ++i){
 
@@ -373,7 +349,7 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 		II1 bw1 = b1;
 		while(bw1 != ew1){
 			--ew1;
-			temp_t = (*(ew1) * i) + extra;
+			temp_t =extra + (*ew1 * i);
 			extra = 0;
 			if(temp_t < 10){
 				result.push_back(temp_t);
@@ -397,10 +373,11 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 	int t_size = size1 + size + 1;
 	vector<int> t(t_size);
 	int i=1;
+	--e2;
 	while( i<size){
 		--e2;
-		vector<int> temp((e1-b1)+1+i);
-		vector<int>::iterator shifted_left = shift_left_digits (c[*(e2-1)].rbegin(), c[*(e2-1)].rend(), i, temp.begin());
+		vector<int> temp(size1+1+i);
+		vector<int>::iterator shifted_left = shift_left_digits (c[*e2].rbegin(), c[*e2].rend(), i, temp.begin());
 		e = plus_digits(p, e, temp.begin(), shifted_left, t.rbegin());
 		p = t.rbegin();
 		++i;
@@ -419,18 +396,6 @@ FI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
 
 template < typename T, typename C = std::vector<T> >
 class Integer {
-
-
-
-
-	void status(std::vector<int> v){
-		for(int i = 0; i <(int) v.size(); i++){
-			cout << v[i] ;
-		}
-		cout << endl;
-	}
-
-
 
 
 
@@ -464,7 +429,9 @@ class Integer {
 	// -----------
 
 	/**
-	 * <your documentation>
+	 @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return true if all elements / sign are equal. False otherwise
 	 */
 	friend bool operator != (const Integer& lhs, const Integer& rhs) {
 		return !(lhs == rhs);}
@@ -474,7 +441,9 @@ class Integer {
 	// ----------
 
 	/**
-	 * <your documentation>
+	 *@param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return true if all elements < sign are greater. False otherwise
 	 */
 	friend bool operator < (const Integer& lhs, const Integer& rhs) {
 		if(lhs.negative == false && rhs.negative == true)
@@ -482,8 +451,8 @@ class Integer {
 		if(lhs.negative == true && rhs.negative == false)
 			return true;
 
-		typename C::const_iterator beg;
-		typename C::const_iterator end;
+		typename C::const_iterator aP;
+		typename C::const_iterator bP;
 
 		if(lhs.negative == false && rhs.negative == false){
 
@@ -495,9 +464,6 @@ class Integer {
 				return false;
 			}
 
-			beg = rhs.container.begin();
-			end = lhs.container.begin();
-
 		}
 
 		if(lhs.negative == true && rhs.negative == true){
@@ -506,22 +472,20 @@ class Integer {
 			if(lhs.container.size() > rhs.container.size())
 				return true;
 
-			beg = rhs.container.begin();
-			end = lhs.container.begin();
+
 		}
+		aP = rhs.container.begin();
+		bP = lhs.container.begin();
 
-
-		while(beg != rhs.container.end()){
-			if(*end < *beg){
-				// cout << *end << "  " << *beg << endl;
+		while(aP != rhs.container.end()){
+			if(*bP < *aP){
 				return true;
 			}
-			else if (*end > *beg ) {
+			else if (*bP > *aP ) {
 				return false;	
 			}
-			// cout << *end << "  " << *beg << endl;	
-			++beg;
-			++end;
+			++aP;
+			++bP;
 		}
 		return false;
 
@@ -533,7 +497,9 @@ class Integer {
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return true if all elements <= sign are less then equal. False otherwise
 	 */
 	friend bool operator <= (const Integer& lhs, const Integer& rhs) {
 		return !(rhs < lhs);}
@@ -543,7 +509,9 @@ class Integer {
 	// ----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return true if all elements > sign are greater. False otherwise
 	 */
 	friend bool operator > (const Integer& lhs, const Integer& rhs) {
 		return (rhs < lhs);}
@@ -553,7 +521,9 @@ class Integer {
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return true if all elements >= sign are greater than or equal. False otherwise
 	 */
 	friend bool operator >= (const Integer& lhs, const Integer& rhs) {
 		return !(lhs < rhs);}
@@ -563,7 +533,9 @@ class Integer {
 	// ----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return the sum of lhs and rhs
 	 */
 	friend Integer operator + (Integer lhs, const Integer& rhs) {
 		return lhs += rhs;}
@@ -573,7 +545,9 @@ class Integer {
 	// ----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return the difference of lhs minus rhs
 	 */
 	friend Integer operator - (Integer lhs, const Integer& rhs) {
 		return lhs -= rhs;}
@@ -583,7 +557,9 @@ class Integer {
 	// ----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return the sum product lhs and rhs
 	 */
 	friend Integer operator * (Integer lhs, const Integer& rhs) {
 		return lhs *= rhs;}
@@ -593,10 +569,15 @@ class Integer {
 	// ----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
+	 * @return the sum of lhs and rhs
 	 * @throws invalid_argument if (rhs == 0)
 	 */
 	friend Integer operator / (Integer lhs, const Integer& rhs) {
+		if(rhs ==0){
+			throw std::invalid_argument("Invalid number 0");
+		}
 		return lhs /= rhs;}
 
 	// ----------
@@ -604,10 +585,14 @@ class Integer {
 	// ----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
 	 * @throws invalid_argument if (rhs <= 0)
 	 */
 	friend Integer operator % (Integer lhs, const Integer& rhs) {
+		if(rhs <=0){
+			throw std::invalid_argument("Invalid number 0");
+		}
 		return lhs %= rhs;}
 
 	// -----------
@@ -615,10 +600,14 @@ class Integer {
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
 	 * @throws invalid_argument if (rhs < 0)
 	 */
 	friend Integer operator << (Integer lhs, int rhs) {
+		if(rhs < 0){
+			throw std::invalid_argument("Invalid number 0");
+		}
 		return lhs <<= rhs;}
 
 	// -----------
@@ -626,10 +615,14 @@ class Integer {
 	// -----------
 
 	/**
-	 * <your documentation>
-	 * @throws invalid_argument if (rhs < 0)
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side	 * @throws invalid_argument if (rhs < 0)
 	 */
 	friend Integer operator >> (Integer lhs, int rhs) {
+		if(rhs < 0){
+			throw std::invalid_argument("Invalid number 0");
+		}
+
 		return lhs >>= rhs;}
 
 	// -----------
@@ -637,7 +630,8 @@ class Integer {
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
 	 */
 	friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
 		if(rhs.negative){
@@ -655,7 +649,8 @@ class Integer {
 
 	/**
 	 * absolute value
-	 * <your documentation>
+	 * @param lhs left hand side of the operation
+	 * @param rhs right hand side
 	 */
 	friend Integer abs (Integer x) {
 		return x.abs();}
@@ -666,7 +661,8 @@ class Integer {
 
 	/**
 	 * power
-	 * <your documentation>
+	 * @param x base
+	 * @param e exponent integer
 	 * @throws invalid_argument if ((x == 0) && (e == 0)) || (e < 0)
 	 */
 	friend Integer pow (Integer x, int e) {
@@ -719,7 +715,6 @@ public:
 			negative = true;
 			t_value = value * (-1);
 			sized = to_string(t_value).size();
-			//			++size;
 		}
 		sized = to_string(t_value).size();
 		int index = sized - 1;
@@ -748,12 +743,16 @@ public:
 	explicit Integer (const std::string& value) {
 
 		bool vd = true;
+		typename C::reverse_iterator ite = container.rbegin();
+
 
 		if( !isdigit(value[0] ) && value[0] != '-' ) {
 			cout << "NOT VALID: " << value[0]<<endl;
 			throw std::invalid_argument("Integer()");
 			vd = false;
 		}
+
+
 		for(int i = 1; i < (int)value.size(); ++i){
 
 			if( !isdigit(value[i] ) ) {
@@ -761,14 +760,24 @@ public:
 				throw std::invalid_argument("Integer()");
 				vd = false;
 			}
+
+
 		}
 
 		// istringstream(value) >> v;
 		if(vd){
-			cout << "VAlID: "<< atoi(value.c_str()) << endl;
+			int beginning = 0;
+			if(value[0] == '-'){
+				beginning = 1;
+			}
+			int m = 0;
+			while(beginning < (int)value.size() && m < (int)container.size() ){
 
-			Integer<int> x(atoi(value.c_str()));
-			x.negative = true;
+				container[m] = 3;
+				++beginning;
+
+				m++;
+			}
 		}
 
 
@@ -785,7 +794,8 @@ public:
 	// ----------
 
 	/**
-	 * <your documentation>
+	 * @param - subtract sign
+	 *
 	 */
 	Integer operator - () const {
 		Integer y = *this;
@@ -803,14 +813,14 @@ public:
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param pre-increment
 	 */
 	Integer& operator ++ () {
 		*this += 1;
 		return *this;}
 
 	/**
-	 * <your documentation>
+	 * @param post-increment
 	 */
 	Integer operator ++ (int) {
 		Integer x = *this;
@@ -822,14 +832,14 @@ public:
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param pre-decrement
 	 */
 	Integer& operator -- () {
 		*this -= 1;
 		return *this;}
 
 	/**
-	 * <your documentation>
+	 * @param post-decrement
 	 */
 	Integer operator -- (int) {
 		Integer x = *this;
@@ -841,7 +851,7 @@ public:
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param plus-equal operator
 	 */
 	Integer& operator += (const Integer& rhs) {
 
@@ -849,7 +859,6 @@ public:
 		typename C::iterator ite;
 
 		if(this->negative == true && rhs.negative == false){
-			// ite = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
 
 		}
 		else if(this->negative == false && rhs.negative == false){
@@ -857,7 +866,6 @@ public:
 			negative = false;
 		}
 		else if(this->negative == false && rhs.negative == true){
-			// ite = minus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
 		}
 		else{
 			ite = plus_digits(this->container.rbegin(), this->container.rend(), rhs.container.rbegin(), rhs.container.rend(), result.begin());
@@ -877,7 +885,7 @@ public:
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param minus-equal operator
 	 */
 	Integer& operator -= (const Integer& rhs) {
 		zeroless_minus_mode = true;
@@ -888,28 +896,15 @@ public:
 		}
 		Integer lhs = *this;
 		C copy_my_Container(rhs.container.begin(), rhs.container.end());
-
-		// cout << "MY copy container" << endl;
-		//       for(int i  =0 ; i< (int)copy_my_Container.size(); i++){
-		//       	cout << copy_my_Container[i];
-		//       }
-		// cout <<  endl;
-
 		C result(lhs.container.size() + rhs.container.size());
 		typename C::iterator ite_e;
 
 		if(lhs.negative == false && rhs.negative == true)
 			ite_e = plus_digits(lhs.container.begin(), lhs.container.end(), rhs.container.begin(), rhs.container.end(), result.begin());
 		else if(lhs.negative == true && rhs.negative == false){
-
-
 			ite_e = plus_digits(lhs.container.begin(), lhs.container.end(), rhs.container.begin(), rhs.container.end(), result.begin());
-
 		}
 		else if(lhs.negative == true && rhs.negative == true){
-
-			// cout << "C" <<endl;
-
 			if(rhs > lhs){
 				ite_e = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin() );
 				negative = false;
@@ -923,10 +918,6 @@ public:
 
 			// cout << "D" <<endl;
 			if(rhs > lhs){
-				// cout << "RHS"<< rhs<< endl;
-
-				// cout << "LHS"<< lhs<< endl;
-				// cout << "E" <<endl;
 				ite_e = minus_digits(copy_my_Container.begin(), copy_my_Container.end(), lhs.container.begin(), lhs.container.end(), result.begin());
 				negative = true;
 			}else{
@@ -944,29 +935,13 @@ public:
 			if(*ite != 0){
 				break;
 			}
-			// cout << *ite << endl;
 			cntz++;
 			++ite;
 		}
-
 		ite = result.begin() + cntz;
-
 		typename C::iterator itend = result.end();
-
 		typename C::iterator itre = container.begin();
-
-
-
-
-
 		C v(ite, itend);
-		// container = copy(ite, itend, itre);
-		//      cout <<"Number of zeroes to remove: "<< cntz << endl;
-		// cout << "MY result container" << endl;
-		//      for(int i  =0 ; i< (int)v.size(); i++){
-		//      	cout << v[i];
-		//      }
-		// cout <<  endl;
 		container.clear();
 		container = v;
 
@@ -979,7 +954,7 @@ public:
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param times-equal operator
 	 */
 	Integer& operator *= (const Integer& rhs) {
 		C my_container(container.begin(), container.end());
@@ -991,13 +966,8 @@ public:
 
 		result.erase(ite, result.end());
 		container.resize(result.size());
-
-
-
 		typename C::iterator ite_r = result.begin();
 		typename C::iterator ite_c = container.begin();
-
-
 		while( ite_r != result.end()){
 			*ite_c = *ite_r;
 			++ite_r;
@@ -1011,7 +981,7 @@ public:
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param divides-equal operator
 	 * @throws invalid_argument if (rhs == 0)
 	 */
 	Integer& operator /= (const Integer& rhs);
@@ -1021,7 +991,7 @@ public:
 	// -----------
 
 	/**
-	 * <your documentation>
+	 * @param modulus-equal operator
 	 * @throws invalid_argument if (rhs <= 0)
 	 */
 	Integer& operator %= (const Integer& rhs) {
@@ -1038,7 +1008,7 @@ public:
 	// ------------
 
 	/**
-	 * <your documentation>
+	 * @param lefshift-equal operator
 	 */
 	Integer& operator <<= (int n) {
 		container.resize(*this.container.size() + n);
@@ -1051,7 +1021,7 @@ public:
 	// ------------
 
 	/**
-	 * <your documentation>
+	 * @param rightshift-equal operator
 	 */
 	Integer& operator >>= (int n) {
 		container.resize(*this.container.size() - n);
@@ -1064,22 +1034,13 @@ public:
 
 	/**
 	 * absolute value
-	 * <your documentation>
+	 * @param absolute value operator
 	 */
 	Integer& abs () {
 		Integer x = *this;
-		//		for(int i=0; i < x.size; i++){
-		//			cout << x.container[i]<< "-";
-		//		}
-		//		cout << endl;
-
-		//		cout << "Negative? = " << x.negative<< endl;
 		if( this->negative){
-			//			cout << "Negative? = yes " << x.negative<< endl;
 			this->negative = false ;
 		}
-
-
 		return *this;}
 
 	// ---
@@ -1088,29 +1049,26 @@ public:
 
 	/**
 	 * power
-	 * <your documentation>
+	 * @param power
 	 * @throws invalid_argument if ((this == 0) && (e == 0)) or (e < 0)
 	 */
 	Integer& pow (int e) {
 		assert(e >= 0);	
-		Integer<int> n = *this;
-		cout<<"This is n " <<  *this << endl;
+		Integer n = *this;
 
 		if (e == 0){
-			Integer<int> one = 1;
+			Integer one = 1;
 			*this = one;
 			return *this;
 		}
-		// Integer d = ee / 2;
-		Integer<int> p = n.pow(e / 2);
-		
+		int d = e/2;
+		Integer p = this->pow(d);
 
-		Integer<int> q = p * p;
 
-		// cout<<"This is q " <<  q << endl;
+		Integer q = p * p;
+
 		if (e & 1){
-			Integer<int> w = q * n;
-					cout<<"This is w " <<  w<< endl;
+			Integer w = q * n;
 
 			*this = w;
 			return *this;
@@ -1118,7 +1076,7 @@ public:
 
 		*this = q;
 		return *this;
-		}
+	}
 
 
 	void resize(int r){
@@ -1126,7 +1084,7 @@ public:
 	}
 
 	void add_digit(int r);
-	
+
 };
 
 
@@ -1135,191 +1093,191 @@ public:
 
 template < typename T, typename C >
 void Integer<T, C>::add_digit(int r){
-		if(  (int)container.size() == 1 && container[0] == 0 && r == 0){
-			cout << "ENTRO AQUI NO SE AGREGO EL 0";
-		}else{
-			this->container.push_back(r);
+	if(  (int)container.size() == 1 && container[0] == 0 && r == 0){
+		cout << "ENTRO AQUI NO SE AGREGO EL 0";
+	}else{
+		this->container.push_back(r);
 
-		}
+	}
 }
 
 
-	// --------------
-	// divides_digits
-	// --------------
+// --------------
+// divides_digits
+// --------------
 
-	/**
-	 * @param b  an iterator to the beginning of an input  sequence (inclusive)
-	 * @param e  an iterator to the end       of an input  sequence (exclusive)
-	 * @param b2 an iterator to the beginning of an input  sequence (inclusive)
-	 * @param e2 an iterator to the end       of an input  sequence (exclusive)
-	 * @param x  an iterator to the beginning of an output sequence (inclusive)
-	 * @return   an iterator to the end       of an output sequence (exclusive)
-	 * the sequences are of decimal digits
-	 * output the division of the two input sequences into the output sequence
-	 * ([b1, e1) / [b2, e2)) => x
-	 */
-	template <typename II1, typename II2, typename FI>
-	FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
-		bool flaggy = false;
-		int divisor_size = distance(b2, e2);
-		int dividend_size = distance(b1, e1);
+/**
+ * @param b  an iterator to the beginning of an input  sequence (inclusive)
+ * @param e  an iterator to the end       of an input  sequence (exclusive)
+ * @param b2 an iterator to the beginning of an input  sequence (inclusive)
+ * @param e2 an iterator to the end       of an input  sequence (exclusive)
+ * @param x  an iterator to the beginning of an output sequence (inclusive)
+ * @return   an iterator to the end       of an output sequence (exclusive)
+ * the sequences are of decimal digits
+ * output the division of the two input sequences into the output sequence
+ * ([b1, e1) / [b2, e2)) => x
+ */
+template <typename II1, typename II2, typename FI>
+FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) {
+	bool flaggy = false;
+	int divisor_size = distance(b2, e2);
+	int dividend_size = distance(b1, e1);
 
-		if(divisor_size > dividend_size){
-			*x = 0;
-			++x;
-			return x;
-		}
+	if(divisor_size > dividend_size){
+		*x = 0;
+		++x;
+		return x;
+	}
 
-		typename vector<int>::iterator itedv;
-		Integer<int> divisor = 0;
-		divisor.resize(divisor_size);
-		itedv = divisor.container.begin();
-
-
-		while(b2 != e2){
-			*itedv = *b2;
-			++b2;
-			++itedv;
-		}
-
-		// cout << "THIS IS MY DIVISOR" << endl;
-		// for(int i = 0; i <(int) divisor.container.size(); i++){
-		// 	cout << divisor.container[i] ;
-		// }
-		// cout << endl;
-
-		typename vector<int>::iterator it_dnd;
-		Integer<int> dividend;
-		// dividend.resize(dividend_size);
-		// it_dnd = dividend.container.begin();
-
-		Integer<int> result;
-
-		while(b1 != e1){
-			dividend.add_digit(*b1);
-			++b1;
-			// ++it_dnd;
-			Integer<int> temp  = 0 ;
-			Integer<int> n  = 0 ;
-			Integer<int> difference  = 1 ;
-			Integer<int> prev_temp = 1;
-
-			// cout << "THIS IS MY n " << endl;
-			// 		status(n);
-
-			// cout << "THIS IS MY DIVIDEND on A" << endl;
-			// for(int i = 0; i <(int) dividend.container.size(); i++){
-			// 	cout << dividend.container[i] ;
-			// }
-			// cout << endl;
-
-			if(divisor <= dividend  || dividend == 0 ){
-				int cnt = 0;
-
-				while( temp  <= dividend ) {
-					// cout << "THIS IS MY n " << endl;
-					// status(n);
-					n++;
-					prev_temp = temp;
-					temp = (n * divisor);
-
-					// cout << "THIS IS what I subtract: " ;
-					// status(prev_temp);
+	typename vector<int>::iterator itedv;
+	Integer<int> divisor = 0;
+	divisor.resize(divisor_size);
+	itedv = divisor.container.begin();
 
 
+	while(b2 != e2){
+		*itedv = *b2;
+		++b2;
+		++itedv;
+	}
 
+	// cout << "THIS IS MY DIVISOR" << endl;
+	// for(int i = 0; i <(int) divisor.container.size(); i++){
+	// 	cout << divisor.container[i] ;
+	// }
+	// cout << endl;
 
-					cnt++;
-				}
-				flaggy =true;
-				cnt--;
-				// cout << "THIS IS MY DIVIDEND: " ;
-				// status(dividend);
-				// cout << endl;
+	typename vector<int>::iterator it_dnd;
+	Integer<int> dividend;
+	// dividend.resize(dividend_size);
+	// it_dnd = dividend.container.begin();
 
-				difference = dividend - prev_temp;
-				// cout << "THIS IS MY DIFFERENCE: " ;
-				// status(difference);
+	Integer<int> result;
 
-				dividend =  difference;
-				// dividend.add_digit(*b1);
+	while(b1 != e1){
+		dividend.add_digit(*b1);
+		++b1;
+		// ++it_dnd;
+		Integer<int> temp  = 0 ;
+		Integer<int> n  = 0 ;
+		Integer<int> difference  = 1 ;
+		Integer<int> prev_temp = 1;
 
-				// cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
-				// status(dividend);
+		// cout << "THIS IS MY n " << endl;
+		// 		status(n);
 
-
-
-				// cout << "THIS IS MY result" << endl;
-				result.add_digit(cnt);
-				// status(result);
-				// return x;
-			}
-			else if(flaggy){
-				result.add_digit(0);
-			}
-
-
-		}
-
-
-		x = copy(result.container.begin(), result.container.end(), x);
-
-
-
-		// cout << "THIS IS MY DIVIDEND" << endl;
+		// cout << "THIS IS MY DIVIDEND on A" << endl;
 		// for(int i = 0; i <(int) dividend.container.size(); i++){
 		// 	cout << dividend.container[i] ;
 		// }
 		// cout << endl;
 
+		if(divisor <= dividend  || dividend == 0 ){
+			int cnt = 0;
 
+			while( temp  <= dividend ) {
+				// cout << "THIS IS MY n " << endl;
+				// status(n);
+				n++;
+				prev_temp = temp;
+				temp = (n * divisor);
 
-		// cout << "THIS IS MY result" << endl;
-		// for(int i = 0; i <(int) result.container.size(); i++){
-		// 	cout << result.container[i] ;
-		// }
-		// cout << endl;
-
-		return x;
-	}
-
-
-
-	// -----------
-	// operator /=
-	// -----------
-
-	/**
-	 * <your documentation>
-	 * @throws invalid_argument if (rhs == 0)
-	 */
-	template < typename T, typename C >
-	Integer<T,C>&  Integer<T, C>::operator /= (const Integer& rhs) {
-		C my_container(container.begin(), container.end());
-		C copy_my_Container(rhs.container.begin(), rhs.container.end());
-		C result(container.size() + rhs.container.size(), 0);
-		typename C::iterator ite;
-		ite= divides_digits(my_container.begin(), my_container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
-
-
-		result.erase(ite, result.end());
-		container.resize(result.size());
+				// cout << "THIS IS what I subtract: " ;
+				// status(prev_temp);
 
 
 
-		typename C::iterator ite_r = result.begin();
-		typename C::iterator ite_c = container.begin();
+
+				cnt++;
+			}
+			flaggy =true;
+			cnt--;
+			// cout << "THIS IS MY DIVIDEND: " ;
+			// status(dividend);
+			// cout << endl;
+
+			difference = dividend - prev_temp;
+			// cout << "THIS IS MY DIFFERENCE: " ;
+			// status(difference);
+
+			dividend =  difference;
+			// dividend.add_digit(*b1);
+
+			// cout << "THIS IS what my DIVIDEND becomes after adding : " << *b1 << endl ;
+			// status(dividend);
 
 
-		while( ite_r != result.end()){
-			*ite_c = *ite_r;
-			++ite_r;
-			++ite_c;
+
+			// cout << "THIS IS MY result" << endl;
+			result.add_digit(cnt);
+			// status(result);
+			// return x;
+		}
+		else if(flaggy){
+			result.add_digit(0);
 		}
 
 
-		return *this;}
+	}
+
+
+	x = copy(result.container.begin(), result.container.end(), x);
+
+
+
+	// cout << "THIS IS MY DIVIDEND" << endl;
+	// for(int i = 0; i <(int) dividend.container.size(); i++){
+	// 	cout << dividend.container[i] ;
+	// }
+	// cout << endl;
+
+
+
+	// cout << "THIS IS MY result" << endl;
+	// for(int i = 0; i <(int) result.container.size(); i++){
+	// 	cout << result.container[i] ;
+	// }
+	// cout << endl;
+
+	return x;
+}
+
+
+
+// -----------
+// operator /=
+// -----------
+
+/**
+ * <your documentation>
+ * @throws invalid_argument if (rhs == 0)
+ */
+template < typename T, typename C >
+Integer<T,C>&  Integer<T, C>::operator /= (const Integer& rhs) {
+	C my_container(container.begin(), container.end());
+	C copy_my_Container(rhs.container.begin(), rhs.container.end());
+	C result(container.size() + rhs.container.size(), 0);
+	typename C::iterator ite;
+	ite= divides_digits(my_container.begin(), my_container.end(), copy_my_Container.begin(), copy_my_Container.end(), result.begin());
+
+
+	result.erase(ite, result.end());
+	container.resize(result.size());
+
+
+
+	typename C::iterator ite_r = result.begin();
+	typename C::iterator ite_c = container.begin();
+
+
+	while( ite_r != result.end()){
+		*ite_c = *ite_r;
+		++ite_r;
+		++ite_c;
+	}
+
+
+	return *this;}
 
 
 #endif // Integer_h

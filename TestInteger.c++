@@ -1173,34 +1173,110 @@ TEST(Integer, power_1) {
 
         cout << "actual: " << y << "  expected: " << expected << endl;
         ASSERT_TRUE(y == 8);
-//         // cout <<"2 to the 3 = "<< y<< endl;
-//         // cout << "2 to the 3 =" << y[0] << endl
-//         // ASSERT_EQ(9867,  e);
-//         // ASSERT_EQ(   0,  x);
-//         ASSERT_EQ(  &x, &y);
-//       }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}
+
     }
 
-TEST(Integer, pow_1) {
-    try {
-        Integer<int>       x = 98765;
-        const int          e =  9867;
-        Integer<int>&      y = x.pow(e);
-        ASSERT_EQ(9867,  e);
-        ASSERT_EQ(   0,  x);
-        ASSERT_EQ(  &x, &y);}
-    catch (std::invalid_argument& e) {
-        ASSERT_TRUE(false);}}
 
-TEST(Integer, pow_2) {
-    try {
-        const Integer<int> x = 98765;
-        const int          e =  9867;
-        const Integer<int> y = pow(x, e);
-        ASSERT_EQ(98765, x);
-        ASSERT_EQ( 9867, e);
-        ASSERT_EQ(    0, y);}
-    catch (std::invalid_argument& e) {
-        ASSERT_TRUE(false);}}
+
+TEST(Integer, power_2) {
+//     try {
+        Integer<int>       x = 2;
+         int          e =  10;
+        Integer<int>&     y = x.pow(e);
+
+        Integer<int>  expected = 1024;
+
+        cout << "actual: " << y << "  expected: " << expected << endl;
+        ASSERT_TRUE(y == expected);
+
+    }
+
+
+TEST(Integer, power_3_1) {
+//     try {
+        Integer<int>       x = 2;
+         int          e =  19;
+        Integer<int>&     y = x.pow(e);
+
+        Integer<int>  expected = 524288;
+
+        Integer < int> dos = 2;
+        Integer<int> experiment = expected * dos;
+
+        cout << "experiment =  " << experiment;
+
+        cout << "actual: " << y << "  expected: " << expected << endl;
+        ASSERT_TRUE(y == expected);
+
+    }
+
+
+TEST(Integer, power_3) {
+//     try {
+        Integer<int>       x = 2;
+         int          e =  20;
+        Integer<int>&     y = x.pow(e);
+
+        Integer<int>  expected = 1048576;
+
+        cout << "actual: " << y << "  expected: " << expected << endl;
+        ASSERT_TRUE(y == expected);
+
+    }
+
+
+TEST(Integer, power_4) {
+        Integer<int>       x = 2;
+         int          e =  11;
+
+        Integer<int> one = 1;
+        Integer<int>&     y = x.pow(e);
+        Integer<int> actual = y - one;
+
+        Integer<int>  expected = 2047;
+
+        cout << "actual: " << y << "  expected: " << expected << endl;
+        ASSERT_TRUE(actual == expected);
+
+    }
+
+TEST(Integer, power_5) {
+        Integer<int>       x = 2;
+         int          e =  59;
+
+        Integer<int> one = 1;
+        Integer<int>&     y = x.pow(e);
+        Integer<int> actual = y - one;
+
+        Integer<int>  expected("576460752303423487");
+
+        cout << "actual: " << y << "  expected: " << expected << endl;
+        ASSERT_TRUE(actual == expected);
+
+    }
+
+
+
+
+
+//TEST(Integer, pow_1) {
+//    try {
+//        Integer<int>       x = 98765;
+//        const int          e =  9867;
+//        Integer<int>&      y = x.pow(e);
+//        ASSERT_EQ(9867,  e);
+//        ASSERT_EQ(   0,  x);
+//        ASSERT_EQ(  &x, &y);}
+//    catch (std::invalid_argument& e) {
+//        ASSERT_TRUE(false);}}
+
+//TEST(Integer, pow_2) {
+//    try {
+//        const Integer<int> x = 98765;
+//        const int          e =  9867;
+//        const Integer<int> y = pow(x, e);
+//        ASSERT_EQ(98765, x);
+//        ASSERT_EQ( 9867, e);
+//        ASSERT_EQ(    0, y);}
+//    catch (std::invalid_argument& e) {
+//        ASSERT_TRUE(false);}}
