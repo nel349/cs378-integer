@@ -9,3 +9,5 @@
 .cproject
 .settings/
 *.gcov
+RunInteger
+TestInteger
